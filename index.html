@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMplay — Conhecimento que a grande mídia não te dá</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root {
+  --red:    #c41e3a;
+  --red-h:  #e02040;
+  --gold:   #d4a017;
+  --green:  #22c55e;
+  --blue:   #4e9bfa;
+
+  --bg:     #0b0b0e;
+  --surf:   #111115;
+  --card:   #18181d;
+  --bord:   #27272e;
+  --text:   #f0f0f3;
+  --muted:  #86869a;
+  --dim:    #38384a;
+
+  --fserif: 'Playfair Display', Georgia, serif;
+  --fsans:  'Inter', system-ui, sans-serif;
+  --rad:    12px;
+  --t:      220ms ease;
+  --max:    1120px;
+}
+[data-theme="light"] {
+  --bg:    #f5f5f7;
+  --surf:  #ffffff;
+  --card:  #ffffff;
+  --bord:  #e2e2e8;
+  --text:  #111118;
+  --muted: #6b6b7d;
+  --dim:   #d0d0da;
+}
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--fsans);line-height:1.65;-webkit-font-smoothing:antialiased;transition:background var(--t),color var(--t)}
+img{display:block;max-width:100%}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+
+/* ── LAYOUT ── */
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 1.25rem}
+@media(min-width:640px){.wrap{padding:0 2rem}}
+@media(min-width:1024px){.wrap{padding:0 3rem}}
+
+section{padding:4rem 0}
+@media(min-width:768px){section{padding:6rem 0}}
+
+/* ── TYPOGRAPHY ── */
+.serif{font-family:var(--fserif)}
+h1,h2,h3{font-family:var(--fserif);font-weight:900;line-height:1.1;letter-spacing:-.02em}
+h1{font-size:clamp(2.4rem,7vw,4.2rem)}
+h2{font-size:clamp(1.8rem,4vw,2.8rem)}
+h3{font-size:1.1rem;font-weight:700}
+p{line-height:1.75}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.6rem;margin-bottom:1rem}
+.eyebrow::before{content:'';width:1.5rem;height:2px;background:var(--red);border-radius:1px;flex-shrink:0}
+.lead{font-size:clamp(.95rem,2vw,1.1rem);color:var(--muted);line-height:1.8;max-width:600px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-size:.9rem;font-weight:600;padding:.75rem 1.5rem;border-radius:8px;transition:background var(--t),color var(--t),transform .15s;white-space:nowrap;touch-action:manipulation}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--red);color:#fff}
+.btn-primary:hover{background:var(--red-h)}
+.btn-ghost{border:1.5px solid var(--bord);color:var(--text)}
+.btn-ghost:hover{border-color:var(--muted)}
+.btn-lg{padding:.9rem 2rem;font-size:1rem}
+@media(min-width:640px){.btn-lg{padding:1rem 2.25rem;font-size:1.05rem}}
+
+/* ── CHIPS / TAGS ── */
+.chip{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .65rem;border-radius:2rem}
+.chip-red  {background:rgba(196,30,58,.18);color:#e04060}
+.chip-gold {background:rgba(212,160,23,.18);color:#c89b15}
+.chip-green{background:rgba(34,197,94,.18);color:#1aad55}
+.chip-blue {background:rgba(78,155,250,.18);color:#4e9bfa}
+.chip-grey {background:var(--bord);color:var(--muted)}
+
+/* ── NAV ── */
+#nav{position:sticky;top:0;z-index:90;background:transparent;transition:background var(--t),border-color var(--t);border-bottom:1px solid transparent}
+#nav.scrolled{background:var(--surf);border-color:var(--bord)}
+[data-theme="light"] #nav.scrolled{box-shadow:0 1px 12px rgba(0,0,0,.07)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;gap:1rem}
+@media(min-width:768px){.nav-inner{height:68px}}
+.nav-logo{display:flex;align-items:center;gap:.6rem;font-family:var(--fserif);font-size:1.2rem;font-weight:800;flex-shrink:0}
+.nav-logo-icon{width:34px;height:34px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-logo span{color:var(--red)}
+.nav-links{display:none;align-items:center;gap:2rem}
+@media(min-width:768px){.nav-links{display:flex}}
+.nav-links a{font-size:.875rem;font-weight:500;color:var(--muted);transition:color var(--t)}
+.nav-links a:hover{color:var(--text)}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+#hamburger{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:8px;color:var(--text)}
+@media(min-width:768px){#hamburger{display:none}}
+.mobile-menu{display:none;flex-direction:column;gap:.25rem;padding:1rem 1.25rem 1.5rem;background:var(--surf);border-bottom:1px solid var(--bord)}
+.mobile-menu.open{display:flex}
+.mobile-menu a{padding:.75rem .5rem;font-size:.95rem;font-weight:500;color:var(--muted);border-radius:8px;transition:color var(--t),background var(--t)}
+.mobile-menu a:hover{color:var(--text);background:var(--card)}
+.mobile-menu .btn{width:100%;margin-top:.5rem;justify-content:center}
+#theme-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--bord);background:var(--surf);color:var(--muted);display:flex;align-items:center;justify-content:center;transition:background var(--t),border-color var(--t),color var(--t)}
+#theme-btn:hover{color:var(--text)}
+
+/* ── HERO ── */
+#hero{padding:4.5rem 0 4rem;overflow:hidden}
+@media(min-width:768px){#hero{padding:7rem 0 5rem}}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:3rem}
+@media(min-width:900px){.hero-grid{grid-template-columns:1fr 1fr;align-items:center;gap:4rem}}
+.hero-text .eyebrow{margin-bottom:1.25rem}
+.hero-text h1{margin-bottom:1.25rem}
+.hero-text h1 em{color:var(--red);font-style:normal}
+.hero-text p{color:var(--muted);font-size:clamp(.95rem,2vw,1.1rem);line-height:1.8;margin-bottom:2rem;max-width:520px}
+.hero-cta{display:flex;gap:.75rem;flex-wrap:wrap}
+.hero-micro{display:flex;align-items:center;gap:.5rem;margin-top:1.25rem;font-size:.78rem;color:var(--dim)}
+.hero-micro svg{flex-shrink:0}
+.hero-thumbs{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:.75rem}
+.thumb{border-radius:10px;overflow:hidden;position:relative;aspect-ratio:16/10}
+.thumb:first-child{grid-column:1/3;aspect-ratio:2/1}
+@media(min-width:480px){.thumb:first-child{aspect-ratio:16/7}}
+.thumb-bg{width:100%;height:100%;display:flex;align-items:flex-end;padding:1rem}
+.thumb-title{font-size:.8rem;font-weight:600;color:#fff;line-height:1.3;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.thumb-badge{position:absolute;top:.65rem;left:.65rem}
+
+/* ── PARTNERS ── */
+#parceiros{padding:2.5rem 0;border-top:1px solid var(--bord);border-bottom:1px solid var(--bord)}
+.partners-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:1.25rem;text-align:center}
+.partners-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.75rem 1.5rem}
+@media(min-width:640px){.partners-row{gap:1rem 2.5rem}}
+.partner-name{font-size:.82rem;font-weight:600;color:var(--dim);letter-spacing:.03em;transition:color var(--t)}
+.partner-name:hover{color:var(--muted)}
+
+/* ── STATS ── */
+#stats{padding:4rem 0}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 2rem}
+@media(min-width:640px){.stats-grid{grid-template-columns:repeat(4,1fr)}}
+.stat-item{text-align:center}
+.stat-val{font-family:var(--fserif);font-size:clamp(2rem,5vw,2.8rem);font-weight:900;line-height:1;letter-spacing:-.02em}
+.stat-lbl{font-size:.78rem;color:var(--muted);margin-top:.35rem;line-height:1.4}
+
+/* ── COURSES ── */
+#cursos{}
+.section-head{margin-bottom:2.5rem}
+.filter-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.5rem}
+.ftab{font-size:.8rem;font-weight:600;padding:.45rem 1rem;border-radius:6px;border:1.5px solid var(--bord);color:var(--muted);transition:background var(--t),color var(--t),border-color var(--t)}
+.ftab.active,.ftab:hover{background:var(--red);color:#fff;border-color:var(--red)}
+
+.courses-scroll{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+@media(max-width:600px){
+  .courses-scroll{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.75rem;padding-bottom:1rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .courses-scroll::-webkit-scrollbar{display:none}
+  .course-card{flex:0 0 78vw;scroll-snap-align:start}
+}
+
+.course-card{background:var(--card);border:1px solid var(--bord);border-radius:var(--rad);overflow:hidden;transition:transform .2s,box-shadow .2s}
+.course-card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.25)}
+[data-theme="light"] .course-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.1)}
+.course-thumb{aspect-ratio:16/9;display:flex;align-items:flex-end;padding:.85rem;position:relative}
+.course-body{padding:1rem 1.1rem 1.25rem}
+.course-title{font-size:.9rem;font-weight:600;line-height:1.4;margin:.5rem 0 .3rem}
+.course-meta{display:flex;align-items:center;gap:.6rem;font-size:.75rem;color:var(--muted)}
+.course-meta span{display:flex;align-items:center;gap:.25rem}
+.dot{width:3px;height:3px;border-radius:50%;background:var(--dim)}
+
+.courses-footer{display:flex;justify-content:center;margin-top:2.5rem}
+
+/* ── PLANS ── */
+#planos{background:var(--surf);border-top:1px solid var(--bord);border-bottom:1px solid var(--bord)}
+.plans-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:2.5rem}
+@media(min-width:640px){.plans-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1024px){.plans-grid{grid-template-columns:repeat(5,1fr)}}
+
+.plan-card{background:var(--card);border:1.5px solid var(--bord);border-radius:var(--rad);padding:1.5rem;display:flex;flex-direction:column;gap:.3rem;position:relative;transition:border-color var(--t)}
+.plan-card.featured{border-color:var(--red)}
+.plan-card.premium{border-color:var(--gold)}
+.plan-card.social{border-color:var(--green)}
+.plan-card.omplay{border-color:var(--blue)}
+.plan-popular{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .75rem;border-radius:0 0 6px 6px;white-space:nowrap}
+[data-theme="light"] .plan-card{box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.plan-name{font-family:var(--fserif);font-size:1.1rem;font-weight:800;margin-top:.25rem}
+.plan-price{font-family:var(--fserif);font-size:2rem;font-weight:900;line-height:1.1;margin-top:.35rem}
+.plan-price small{font-family:var(--fsans);font-size:.75rem;font-weight:400;color:var(--muted)}
+.plan-period{font-size:.72rem;color:var(--muted);margin-bottom:.25rem}
+.plan-divider{border:none;border-top:1px solid var(--bord);margin:.85rem 0}
+.plan-list{display:flex;flex-direction:column;gap:.4rem}
+.plan-list li{font-size:.8rem;color:var(--muted);display:flex;gap:.5rem;line-height:1.45;align-items:flex-start}
+.plan-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;line-height:1.45}
+.plan-list li.no::before{content:'—';color:var(--dim)}
+.plan-list li.no{opacity:.5}
+.plan-cta{margin-top:auto;padding-top:1.25rem}
+.plan-cta .btn{width:100%;justify-content:center}
+.plan-solidarity{margin-top:2rem;background:rgba(34,197,94,.06);border:1.5px solid rgba(34,197,94,.25);border-radius:var(--rad);padding:1.5rem}
+.plan-solidarity h3{color:var(--green);margin-bottom:.4rem}
+.plan-solidarity p{font-size:.85rem;color:var(--muted);line-height:1.7}
+
+/* ── WHY ── */
+#porque{padding:5rem 0}
+.why-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:2.5rem}
+@media(min-width:640px){.why-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.why-grid{grid-template-columns:repeat(3,1fr)}}
+.why-card{background:var(--card);border:1px solid var(--bord);border-radius:var(--rad);padding:1.5rem}
+.why-icon{width:44px;height:44px;border-radius:10px;background:rgba(196,30,58,.12);display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.why-card h3{font-size:.95rem;margin-bottom:.4rem}
+.why-card p{font-size:.84rem;color:var(--muted);line-height:1.7}
+
+/* ── INSTRUCTORS ── */
+#instrutores{}
+.instructors-scroll{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+@media(max-width:600px){
+  .instructors-scroll{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.75rem;padding-bottom:1rem;scrollbar-width:none}
+  .instructors-scroll::-webkit-scrollbar{display:none}
+  .instructor-card{flex:0 0 56vw;scroll-snap-align:start}
+}
+.instructor-card{background:var(--card);border:1px solid var(--bord);border-radius:var(--rad);padding:1.25rem;text-align:center}
+.instructor-avatar{width:64px;height:64px;border-radius:50%;margin:0 auto .85rem;display:flex;align-items:center;justify-content:center;font-family:var(--fserif);font-size:1.4rem;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--red),#7c1228)}
+.instructor-name{font-weight:600;font-size:.9rem;margin-bottom:.25rem}
+.instructor-area{font-size:.75rem;color:var(--muted);line-height:1.4}
+
+/* ── TESTIMONIALS ── */
+#depoimentos{background:var(--surf);border-top:1px solid var(--bord);border-bottom:1px solid var(--bord)}
+.testi-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:2.5rem}
+@media(min-width:640px){.testi-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.testi-grid{grid-template-columns:repeat(3,1fr)}}
+.testi-card{background:var(--card);border:1px solid var(--bord);border-radius:var(--rad);padding:1.5rem}
+[data-theme="light"] .testi-card{box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.testi-stars{color:var(--gold);font-size:.85rem;margin-bottom:.85rem;letter-spacing:.05em}
+.testi-text{font-size:.88rem;color:var(--muted);line-height:1.75;margin-bottom:1.1rem}
+.testi-author{display:flex;align-items:center;gap:.75rem}
+.testi-avatar{width:36px;height:36px;border-radius:50%;background:var(--bord);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:var(--muted);flex-shrink:0}
+.testi-name{font-size:.82rem;font-weight:600}
+.testi-role{font-size:.72rem;color:var(--muted)}
+
+/* ── STORE PREVIEW ── */
+#loja{}
+.store-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:2.5rem}
+@media(min-width:640px){.store-grid{grid-template-columns:repeat(3,1fr)}}
+.store-card{background:var(--card);border:1px solid var(--bord);border-radius:var(--rad);overflow:hidden}
+.store-img{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
+.store-body{padding:1.1rem}
+.store-name{font-weight:600;font-size:.9rem;margin-bottom:.3rem}
+.store-desc{font-size:.8rem;color:var(--muted);line-height:1.6}
+.store-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.85rem;gap:.5rem;flex-wrap:wrap}
+.store-price{font-family:var(--fserif);font-size:1.3rem;font-weight:800}
+.store-note{font-size:.7rem;color:var(--muted);margin-top:.3rem}
+
+/* ── DATA FÓRUM ── */
+#data{}
+.data-card{background:var(--card);border:1px solid var(--bord);border-radius:var(--rad);overflow:hidden;margin-top:2.5rem}
+@media(min-width:768px){.data-card{display:grid;grid-template-columns:1fr 2fr}}
+.data-cover{aspect-ratio:1;display:flex;align-items:center;justify-content:center;padding:2rem;background:linear-gradient(135deg,#0f0f2e,#1a1a4e)}
+@media(min-width:768px){.data-cover{aspect-ratio:auto}}
+.data-cover-inner{text-align:center}
+.data-cover-label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(78,155,250,.8);margin-bottom:.75rem}
+.data-cover-title{font-family:var(--fserif);font-size:1.3rem;font-weight:800;color:#fff;line-height:1.3}
+.data-cover-date{font-size:.72rem;color:rgba(255,255,255,.45);margin-top:.6rem}
+.data-body{padding:1.75rem}
+.data-body h3{font-size:1.1rem;margin-bottom:.6rem}
+.data-body p{font-size:.88rem;color:var(--muted);line-height:1.75;margin-bottom:1.25rem}
+.data-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.5rem}
+
+/* ── FAQ ── */
+#faq{background:var(--surf);border-top:1px solid var(--bord)}
+.faq-list{margin-top:2rem;border:1px solid var(--bord);border-radius:var(--rad);overflow:hidden;max-width:700px}
+.faq-item{border-bottom:1px solid var(--bord)}
+.faq-item:last-child{border-bottom:none}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.1rem 1.25rem;font-size:.9rem;font-weight:600;color:var(--text);text-align:left;background:var(--card);transition:background var(--t)}
+.faq-q:hover{background:var(--bord)}
+.faq-icon{width:20px;height:20px;flex-shrink:0;color:var(--muted);transition:transform .2s}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-a{display:none;padding:0 1.25rem 1.1rem;font-size:.875rem;color:var(--muted);line-height:1.75;background:var(--card)}
+.faq-item.open .faq-a{display:block}
+
+/* ── FINAL CTA ── */
+#cta-final{text-align:center;background:linear-gradient(160deg,rgba(196,30,58,.1) 0%,transparent 60%);border-top:1px solid var(--bord)}
+#cta-final h2{margin-bottom:1rem}
+#cta-final p{color:var(--muted);font-size:clamp(.9rem,2vw,1.05rem);max-width:520px;margin:0 auto 2rem}
+.cta-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+.cta-micro{font-size:.75rem;color:var(--dim);margin-top:1.1rem}
+
+/* ── FOOTER ── */
+footer{background:var(--surf);border-top:1px solid var(--bord);padding:3.5rem 0 2rem}
+.footer-grid{display:grid;grid-template-columns:1fr;gap:2.5rem 3rem}
+@media(min-width:640px){.footer-grid{grid-template-columns:2fr 1fr 1fr}}
+@media(min-width:900px){.footer-grid{grid-template-columns:2.5fr 1fr 1fr 1fr}}
+.footer-brand{font-family:var(--fserif);font-size:1.25rem;font-weight:800;margin-bottom:.75rem}
+.footer-brand span{color:var(--red)}
+.footer-desc{font-size:.84rem;color:var(--muted);line-height:1.75;max-width:300px}
+.footer-socials{display:flex;gap:.6rem;margin-top:1.1rem}
+.footer-social{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--bord);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:color var(--t),border-color var(--t)}
+.footer-social:hover{color:var(--text);border-color:var(--muted)}
+.footer-col h4{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem}
+.footer-links{display:flex;flex-direction:column;gap:.6rem}
+.footer-links a{font-size:.84rem;color:var(--muted);transition:color var(--t)}
+.footer-links a:hover{color:var(--text)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--bord);font-size:.75rem;color:var(--dim)}
+.footer-legal{display:flex;gap:1.25rem;flex-wrap:wrap}
+.footer-legal a{color:var(--dim);transition:color var(--t)}
+.footer-legal a:hover{color:var(--muted)}
+.payment-badges{display:flex;gap:.4rem;flex-wrap:wrap}
+.pbadge{background:var(--card);border:1px solid var(--bord);border-radius:4px;padding:.2rem .45rem;font-size:.65rem;font-weight:700;color:var(--dim)}
+
+/* ── REVEAL ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bord);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<header>
+  <nav id="nav">
+    <div class="wrap nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        OM<span>play</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#cursos">Cursos</a>
+        <a href="#planos">Planos</a>
+        <a href="#loja">Loja</a>
+        <a href="#data">Data Fórum</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="nav-right">
+        <button id="theme-btn" aria-label="Alternar tema">
+          <svg id="ico-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg id="ico-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <a href="#planos" class="btn btn-primary" style="display:none" id="nav-cta">Assinar</a>
+        <button id="hamburger" aria-label="Menu">
+          <svg id="ham-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg id="ham-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#cursos" class="mobile-link">Cursos</a>
+    <a href="#planos" class="mobile-link">Planos</a>
+    <a href="#loja" class="mobile-link">Loja</a>
+    <a href="#data" class="mobile-link">Data Fórum</a>
+    <a href="#faq" class="mobile-link">FAQ</a>
+    <a href="#planos" class="btn btn-primary">Assinar agora</a>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-text reveal">
+        <p class="eyebrow">Plataforma de cursos progressistas</p>
+        <h1>Conhecimento que a grande mídia <em>não te dá.</em></h1>
+        <p>47+ cursos com os maiores pensadores do Brasil. Curadoria da Revista Fórum. Assine e tenha acesso a tudo — inclusive à revista semanal toda sexta-feira.</p>
+        <div class="hero-cta">
+          <a href="#planos" class="btn btn-primary btn-lg">Começar agora</a>
+          <a href="#cursos" class="btn btn-ghost btn-lg">Ver cursos</a>
+        </div>
+        <p class="hero-micro">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Cancele quando quiser &nbsp;·&nbsp; Sem fidelidade
+        </p>
+      </div>
+
+      <div class="hero-thumbs reveal" style="transition-delay:.15s">
+        <div class="thumb" style="">
+          <div class="thumb-bg" style="background:linear-gradient(160deg,#1a0a14 0%,#6b0a22 100%)">
+            <span class="thumb-title">Fascismo, Neofascismo e Resistência Democrática</span>
+          </div>
+          <span class="thumb-badge chip chip-red">Política</span>
+        </div>
+        <div class="thumb">
+          <div class="thumb-bg" style="background:linear-gradient(160deg,#0a1a2e 0%,#0a3a6e 100%)">
+            <span class="thumb-title">História do Movimento Operário no Brasil</span>
+          </div>
+          <span class="thumb-badge chip chip-blue">História</span>
+        </div>
+        <div class="thumb">
+          <div class="thumb-bg" style="background:linear-gradient(160deg,#0f1a0a 0%,#1a4a0a 100%)">
+            <span class="thumb-title">Economia Política para não economistas</span>
+          </div>
+          <span class="thumb-badge chip chip-green">Economia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PARCEIROS ── -->
+<div id="parceiros">
+  <div class="wrap">
+    <p class="partners-label">Em parceria com</p>
+    <div class="partners-row">
+      <span class="partner-name">Brasil 247</span>
+      <span class="partner-name">DCM</span>
+      <span class="partner-name">Cafezinho</span>
+      <span class="partner-name">Barão de Itararé</span>
+      <span class="partner-name">Brasil de Fato</span>
+      <span class="partner-name">Socialista Morena</span>
+      <span class="partner-name">O Historiador</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── STATS ── -->
+<section id="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <p class="stat-val" style="color:var(--red)" data-count="12000" data-suffix="+">0</p>
+        <p class="stat-lbl">Assinantes ativos</p>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:.08s">
+        <p class="stat-val" style="color:var(--blue)" data-count="47" data-suffix="+">0</p>
+        <p class="stat-lbl">Cursos disponíveis</p>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:.16s">
+        <p class="stat-val" style="color:var(--gold)" data-count="180" data-suffix="+">0</p>
+        <p class="stat-lbl">Horas de conteúdo</p>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:.24s">
+        <p class="stat-val" style="color:var(--green)">4.8<span style="font-size:1.5rem">★</span></p>
+        <p class="stat-lbl">Avaliação média</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CURSOS ── -->
+<section id="cursos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Catálogo</p>
+      <h2>Cursos em destaque</h2>
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="ftab active" data-cat="todos">Todos</button>
+        <button class="ftab" data-cat="política">Política</button>
+        <button class="ftab" data-cat="história">História</button>
+        <button class="ftab" data-cat="cultura">Cultura</button>
+        <button class="ftab" data-cat="economia">Economia</button>
+        <button class="ftab" data-cat="antifascismo">Antifascismo</button>
+      </div>
+    </div>
+
+    <div class="courses-scroll reveal" id="courses-grid">
+
+      <div class="course-card" data-cat="antifascismo">
+        <div class="course-thumb" style="background:linear-gradient(160deg,#1a0a14,#6b0a22)">
+          <span class="chip chip-red">Antifascismo</span>
+        </div>
+        <div class="course-body">
+          <p class="course-title">Fascismo, Neofascismo e Resistência Democrática</p>
+          <div class="course-meta">
+            <span>Sergio Amadeu</span>
+            <span class="dot"></span>
+            <span>8h 20min</span>
+            <span class="dot"></span>
+            <span>★ 4.9</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" data-cat="história">
+        <div class="course-thumb" style="background:linear-gradient(160deg,#0a1a2e,#0a3a6e)">
+          <span class="chip chip-blue">História</span>
+        </div>
+        <div class="course-body">
+          <p class="course-title">História do Movimento Operário no Brasil</p>
+          <div class="course-meta">
+            <span>Prof. Lincoln Secco</span>
+            <span class="dot"></span>
+            <span>6h 45min</span>
+            <span class="dot"></span>
+            <span>★ 4.8</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" data-cat="economia">
+        <div class="course-thumb" style="background:linear-gradient(160deg,#0f1a0a,#1a4a0a)">
+          <span class="chip chip-green">Economia</span>
+        </div>
+        <div class="course-body">
+          <p class="course-title">Economia Política para não economistas</p>
+          <div class="course-meta">
+            <span>Prof. Ladislau Dowbor</span>
+            <span class="dot"></span>
+            <span>5h 30min</span>
+            <span class="dot"></span>
+            <span>★ 4.9</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" data-cat="política">
+        <div class="course-thumb" style="background:linear-gradient(160deg,#1a1206,#4a3406)">
+          <span class="chip chip-gold">Política</span>
+        </div>
+        <div class="course-body">
+          <p class="course-title">Democracia, Golpe e Soberania Popular</p>
+          <div class="course-meta">
+            <span>Prof. Frei Betto</span>
+            <span class="dot"></span>
+            <span>4h 15min</span>
+            <span class="dot"></span>
+            <span>★ 4.7</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" data-cat="cultura">
+        <div class="course-thumb" style="background:linear-gradient(160deg,#1a0a1a,#4e1a6e)">
+          <span class="chip chip-blue" style="background:rgba(159,122,234,.18);color:#9f7aea">Cultura</span>
+        </div>
+        <div class="course-body">
+          <p class="course-title">Arte, Cultura e Resistência no Brasil</p>
+          <div class="course-meta">
+            <span>Conceição Evaristo</span>
+            <span class="dot"></span>
+            <span>5h 00min</span>
+            <span class="dot"></span>
+            <span>★ 4.9</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" data-cat="política">
+        <div class="course-thumb" style="background:linear-gradient(160deg,#0a1a1a,#0a3a3a)">
+          <span class="chip chip-blue">Política</span>
+        </div>
+        <div class="course-body">
+          <p class="course-title">Mídia, Poder e Contra-narrativas</p>
+          <div class="course-meta">
+            <span>Prof. Venício Lima</span>
+            <span class="dot"></span>
+            <span>3h 50min</span>
+            <span class="dot"></span>
+            <span>★ 4.8</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="courses-footer reveal">
+      <a href="#planos" class="btn btn-ghost">Ver todos os 47 cursos</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── PLANOS ── -->
+<section id="planos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Preços</p>
+      <h2>Escolha seu plano</h2>
+      <p class="lead" style="margin-top:.75rem">Do acesso gratuito ao premium com produtos físicos. Todos os planos incluem acesso aos cursos.</p>
+    </div>
+
+    <div class="plans-grid">
+
+      <div class="plan-card reveal">
+        <span class="chip chip-grey">Gratuito</span>
+        <p class="plan-name">Descoberta</p>
+        <p class="plan-price">R$&nbsp;0</p>
+        <p class="plan-period">Para sempre grátis</p>
+        <hr class="plan-divider">
+        <ul class="plan-list">
+          <li>Acesso aos cursos (com publicidade)</li>
+          <li>Catálogo completo</li>
+          <li>Notícias com publicidade</li>
+          <li class="no">Certificados</li>
+          <li class="no">Revista semanal</li>
+          <li class="no">Produtos físicos</li>
+        </ul>
+        <div class="plan-cta">
+          <a href="#" class="btn btn-ghost">Começar grátis</a>
+        </div>
+      </div>
+
+      <div class="plan-card featured reveal" style="transition-delay:.07s">
+        <div class="plan-popular">Mais popular</div>
+        <span class="chip chip-red">Essencial</span>
+        <p class="plan-name">Assinante</p>
+        <p class="plan-price">R$&nbsp;19<small>,90</small></p>
+        <p class="plan-period">por mês · cobrado anualmente</p>
+        <hr class="plan-divider">
+        <ul class="plan-list">
+          <li>Cursos <strong>sem publicidade</strong></li>
+          <li>Revista Fórum toda sexta-feira</li>
+          <li>Arquivo histórico completo</li>
+          <li class="no">Certificados</li>
+          <li class="no">Aulas ao vivo</li>
+          <li class="no">Produtos físicos</li>
+        </ul>
+        <div class="plan-cta">
+          <a href="#" class="btn btn-primary">Assinar agora</a>
+        </div>
+      </div>
+
+      <div class="plan-card omplay reveal" style="transition-delay:.14s">
+        <span class="chip chip-blue">Plataforma</span>
+        <p class="plan-name">OMplay</p>
+        <p class="plan-price">R$&nbsp;39<small>,90</small></p>
+        <p class="plan-period">por mês · cobrado anualmente</p>
+        <hr class="plan-divider">
+        <ul class="plan-list">
+          <li>Tudo do Assinante</li>
+          <li>Certificados de conclusão</li>
+          <li>Aulas magnas ao vivo</li>
+          <li>Documentários e filmes</li>
+          <li>1 acesso solidário incluso</li>
+          <li class="no">Produtos físicos mensais</li>
+        </ul>
+        <div class="plan-cta">
+          <a href="#" class="btn btn-primary">Assinar agora</a>
+        </div>
+      </div>
+
+      <div class="plan-card premium reveal" style="transition-delay:.21s">
+        <span class="chip chip-gold">Premium</span>
+        <p class="plan-name">Apoiador</p>
+        <p class="plan-price">R$&nbsp;79<small>,90</small></p>
+        <p class="plan-period">por mês · cobrado anualmente</p>
+        <hr class="plan-divider">
+        <ul class="plan-list">
+          <li>Tudo do OMplay</li>
+          <li><strong>Café Fórum todo mês</strong></li>
+          <li><strong>Boné Fórum na renovação</strong></li>
+          <li>Acesso antecipado a cursos</li>
+          <li>2 acessos solidários</li>
+          <li>Resumos Data Fórum</li>
+        </ul>
+        <div class="plan-cta">
+          <a href="#" class="btn btn-primary">Assinar agora</a>
+        </div>
+      </div>
+
+      <div class="plan-card social reveal" style="transition-delay:.28s">
+        <span class="chip chip-green">Acesso Social</span>
+        <p class="plan-name">Comunidade</p>
+        <p class="plan-price" style="font-size:1.5rem">Grátis</p>
+        <p class="plan-period">mediante validação de elegibilidade</p>
+        <hr class="plan-divider">
+        <ul class="plan-list">
+          <li>Cursos completos</li>
+          <li>Certificados de conclusão</li>
+          <li>Para estudantes, aposentados,<br>professores da rede pública e ONGs</li>
+          <li class="no">Revista digital</li>
+          <li class="no">Produtos físicos</li>
+        </ul>
+        <div class="plan-cta">
+          <a href="#" class="btn btn-ghost">Solicitar acesso</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="plan-solidarity reveal mt-4" style="margin-top:2rem">
+      <h3>💚 Acesso solidário para quem mais precisa</h3>
+      <p>Estudantes de baixa renda, professores da rede pública, aposentados com benefício INSS abaixo de 2 salários mínimos e representantes de entidades sociais podem solicitar acesso gratuito. A validação é feita em até 24h.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── POR QUÊ ── -->
+<section id="porque">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Por que OMplay</p>
+      <h2>Curadoria que faz diferença</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <h3>Curadoria editorial rigorosa</h3>
+        <p>Cada curso é escolhido pela equipe da Revista Fórum. Nenhum infoproduto. Apenas intelectuais, professores e pesquisadores reconhecidos pelas suas áreas.</p>
+      </div>
+      <div class="why-card reveal" style="transition-delay:.08s">
+        <div class="why-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>24 anos de credibilidade editorial</h3>
+        <p>A Revista Fórum é referência no jornalismo independente progressista. O OMplay é a plataforma de cursos dessa tradição — com a mesma seriedade e profundidade.</p>
+      </div>
+      <div class="why-card reveal" style="transition-delay:.16s">
+        <div class="why-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h3>Conteúdo sempre atualizado</h3>
+        <p>Novos cursos todo mês. Aulas magnas ao vivo com os principais nomes do pensamento crítico brasileiro. E a revista semanal toda sexta-feira, sem falta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INSTRUTORES ── -->
+<section id="instrutores">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Quem ensina</p>
+      <h2>Os melhores professores do Brasil</h2>
+    </div>
+    <div class="instructors-scroll">
+      <div class="instructor-card reveal">
+        <div class="instructor-avatar" style="background:linear-gradient(135deg,#c41e3a,#7c1228)">SA</div>
+        <p class="instructor-name">Sergio Amadeu</p>
+        <p class="instructor-area">Ciência Política · USP/UFABC</p>
+      </div>
+      <div class="instructor-card reveal" style="transition-delay:.06s">
+        <div class="instructor-avatar" style="background:linear-gradient(135deg,#1a3a6e,#0a1a4e)">LS</div>
+        <p class="instructor-name">Lincoln Secco</p>
+        <p class="instructor-area">História · USP</p>
+      </div>
+      <div class="instructor-card reveal" style="transition-delay:.12s">
+        <div class="instructor-avatar" style="background:linear-gradient(135deg,#1a4a0a,#0a2a0a)">LD</div>
+        <p class="instructor-name">Ladislau Dowbor</p>
+        <p class="instructor-area">Economia · PUC-SP</p>
+      </div>
+      <div class="instructor-card reveal" style="transition-delay:.18s">
+        <div class="instructor-avatar" style="background:linear-gradient(135deg,#6b3a0a,#3a1a06)">FB</div>
+        <p class="instructor-name">Frei Betto</p>
+        <p class="instructor-area">Teologia · Escritor</p>
+      </div>
+      <div class="instructor-card reveal" style="transition-delay:.24s">
+        <div class="instructor-avatar" style="background:linear-gradient(135deg,#4e1a6e,#2a0a4a)">CE</div>
+        <p class="instructor-name">Conceição Evaristo</p>
+        <p class="instructor-area">Literatura · PUC-Rio</p>
+      </div>
+      <div class="instructor-card reveal" style="transition-delay:.30s">
+        <div class="instructor-avatar" style="background:linear-gradient(135deg,#0a3a3a,#0a1a1a)">VL</div>
+        <p class="instructor-name">Venício Lima</p>
+        <p class="instructor-area">Comunicação · UnB</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEPOIMENTOS ── -->
+<section id="depoimentos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Depoimentos</p>
+      <h2>O que os assinantes dizem</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <p class="testi-stars">★★★★★</p>
+        <p class="testi-text">"O OMplay preencheu uma lacuna que eu nem sabia que tinha. É impossível encontrar esse nível de profundidade em qualquer outra plataforma de cursos."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">MF</div>
+          <div>
+            <p class="testi-name">Mariana Fontes</p>
+            <p class="testi-role">Professora de História · São Paulo, SP</p>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.08s">
+        <p class="testi-stars">★★★★★</p>
+        <p class="testi-text">"A revista semanal toda sexta é o melhor encerramento de semana que eu poderia ter. Conteúdo que desafia e educa ao mesmo tempo. Vale cada centavo."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">RC</div>
+          <div>
+            <p class="testi-name">Rafael Costa</p>
+            <p class="testi-role">Advogado · Porto Alegre, RS</p>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.16s">
+        <p class="testi-stars">★★★★★</p>
+        <p class="testi-text">"Acesso pelo plano Comunidade. Para mim, como professora da rede pública, ter acesso a esses conteúdos foi transformador. O plano solidário funciona de verdade."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">JO</div>
+          <div>
+            <p class="testi-name">Joana Oliveira</p>
+            <p class="testi-role">Professora da rede pública · Recife, PE</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LOJA ── -->
+<section id="loja">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Loja Fórum</p>
+      <h2>Declare seus valores</h2>
+      <p class="lead" style="margin-top:.75rem">Produtos com a identidade editorial do Fórum. Inclusos no plano Apoiador ou disponíveis avulsos.</p>
+    </div>
+    <div class="store-grid">
+      <div class="store-card reveal">
+        <div class="store-img" style="background:rgba(139,69,19,.12)">☕</div>
+        <div class="store-body">
+          <p class="store-name">Café Fórum</p>
+          <p class="store-desc">Café especial de produtores cooperativados. Blend "Outro Mundo em Debate". 250g com design editorial.</p>
+          <div class="store-footer">
+            <p class="store-price">R$&nbsp;34,90</p>
+            <span class="chip chip-gold">Mensal no Premium</span>
+          </div>
+          <p class="store-note">Ou avulso na loja</p>
+        </div>
+      </div>
+      <div class="store-card reveal" style="transition-delay:.08s">
+        <div class="store-img" style="background:rgba(196,30,58,.08)">🧢</div>
+        <div class="store-body">
+          <p class="store-name">Boné Fórum</p>
+          <p class="store-desc">Boné estruturado 6 painéis com bordado. Edição limitada anual. Preto ou vinho. Feito para quem não tem medo de se posicionar.</p>
+          <div class="store-footer">
+            <p class="store-price">R$&nbsp;89,90</p>
+            <span class="chip chip-gold">Anual no Premium</span>
+          </div>
+          <p class="store-note">Ou avulso na loja</p>
+        </div>
+      </div>
+      <div class="store-card reveal" style="transition-delay:.16s">
+        <div class="store-img" style="background:rgba(78,155,250,.07)">📦</div>
+        <div class="store-body">
+          <p class="store-name">Kit Boas-Vindas</p>
+          <p class="store-desc">Boné + café + caderno Fórum + adesivos. Enviado no 1º mês do plano Apoiador. Unboxing que vira conteúdo.</p>
+          <div class="store-footer">
+            <p class="store-price">R$&nbsp;149,90</p>
+            <span class="chip chip-red">1ª Assinatura Premium</span>
+          </div>
+          <p class="store-note">Enviado automaticamente</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem" class="reveal">
+      <a href="#planos" class="btn btn-ghost">Ver plano Apoiador →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── DATA FÓRUM ── -->
+<section id="data">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Pesquisa &amp; Dados</p>
+      <h2>Data Fórum</h2>
+      <p class="lead" style="margin-top:.75rem">Relatórios de monitoramento político, pesquisas de opinião e análises eleitorais produzidos com rigor metodológico.</p>
+    </div>
+    <div class="data-card reveal">
+      <div class="data-cover">
+        <div class="data-cover-inner">
+          <p class="data-cover-label">Relatório &bull; Maio 2025</p>
+          <p class="data-cover-title">Discurso de Ódio nas Redes Sociais — Monitoramento Q1 2025</p>
+          <p class="data-cover-date">Instituto Data Fórum · 47 páginas</p>
+        </div>
+      </div>
+      <div class="data-body">
+        <h3>O que o relatório revela</h3>
+        <p>Análise de 2,4 milhões de publicações monitoradas entre janeiro e março de 2025. Identificação de narrativas de ódio, desinformação e agendas coordenadas nos principais grupos políticos do país.</p>
+        <div class="data-tags">
+          <span class="chip chip-blue">Monitoramento</span>
+          <span class="chip chip-grey">Redes Sociais</span>
+          <span class="chip chip-red">Desinformação</span>
+          <span class="chip chip-grey">Q1 2025</span>
+        </div>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <a href="#" class="btn btn-primary">Acessar relatório</a>
+          <a href="#" class="btn btn-ghost">Saiba mais sobre o Data Fórum</a>
+        </div>
+        <p style="font-size:.75rem;color:var(--dim);margin-top:.85rem">Resumo gratuito para assinantes OMplay · Versão completa: R$&nbsp;490 ou assinatura institucional</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Dúvidas frequentes</p>
+      <h2>Perguntas frequentes</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>Posso cancelar quando quiser?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Sim. Você cancela quando quiser, sem multa e sem burocracia. O acesso continua até o fim do período já pago.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>Como funciona o plano Comunidade?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Estudantes com renda per capita baixa, professores da rede pública, aposentados com benefício INSS até 2 salários mínimos e representantes de entidades sociais podem solicitar acesso gratuito. Basta enviar um comprovante digital — a validação é feita em até 24h.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>A revista semanal chega todo mês?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">A Revista Fórum digital chega toda sexta-feira para assinantes dos planos Assinante, OMplay e Apoiador. Você acessa pelo app ou pelo navegador — disponível também em modo offline.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>Os certificados são reconhecidos?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Os certificados do OMplay são emitidos pela plataforma com referência ao instrutor e à instituição de origem do professor. São amplamente utilizados em currículos e portfólios como formação complementar.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span>Como funciona a entrega do Café Fórum?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Assinantes do plano Apoiador recebem um pacote de 250g do Café Fórum todo mês, com frete incluso. A entrega é feita em até 5 dias úteis para capitais e regiões metropolitanas.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<section id="cta-final">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow" style="justify-content:center">Comece hoje</p>
+      <h2>O conhecimento que você<br>está procurando está aqui.</h2>
+      <p>47 cursos. Revista semanal. Produtos com a marca Fórum. Tudo em um só lugar, com a credibilidade de 24 anos de jornalismo independente.</p>
+      <div class="cta-btns">
+        <a href="#planos" class="btn btn-primary btn-lg">Escolher meu plano</a>
+        <a href="#cursos" class="btn btn-ghost btn-lg">Explorar cursos</a>
+      </div>
+      <p class="cta-micro">Cancele quando quiser · Plano gratuito disponível · Acesso solidário para quem precisa</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">OM<span>play</span></p>
+        <p class="footer-desc">A plataforma de cursos da Revista Fórum. Conhecimento progressista, curado com rigor editorial, acessível para todos.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social" aria-label="Instagram">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="footer-social" aria-label="YouTube">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+          <a href="#" class="footer-social" aria-label="X / Twitter">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>Plataforma</h4>
+        <div class="footer-links">
+          <a href="#cursos">Cursos</a>
+          <a href="#planos">Planos &amp; preços</a>
+          <a href="#instrutores">Instrutores</a>
+          <a href="#loja">Loja Fórum</a>
+          <a href="#data">Data Fórum</a>
+        </div>
+      </div>
+      <div>
+        <h4>Suporte</h4>
+        <div class="footer-links">
+          <a href="#faq">FAQ</a>
+          <a href="#">Contato</a>
+          <a href="#">Acesso solidário</a>
+          <a href="#">Afiliados</a>
+        </div>
+      </div>
+      <div>
+        <h4>Formas de pagamento</h4>
+        <div class="payment-badges" style="margin-bottom:1rem">
+          <span class="pbadge">Pix</span>
+          <span class="pbadge">Boleto</span>
+          <span class="pbadge">Visa</span>
+          <span class="pbadge">Master</span>
+          <span class="pbadge">Elo</span>
+        </div>
+        <h4 style="margin-top:1rem">Segurança</h4>
+        <div class="payment-badges" style="margin-top:.5rem">
+          <span class="pbadge">SSL 256-bit</span>
+          <span class="pbadge">PCI-DSS</span>
+          <span class="pbadge">LGPD</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 OMplay / Revista Fórum. Todos os direitos reservados.</p>
+      <div class="footer-legal">
+        <a href="#">Termos de uso</a>
+        <a href="#">Privacidade</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ── THEME ── */
+  const html=document.documentElement,
+        btn=document.getElementById('theme-btn'),
+        sun=document.getElementById('ico-sun'),
+        moon=document.getElementById('ico-moon');
+  function setTheme(t){
+    html.setAttribute('data-theme',t);
+    localStorage.setItem('omplay-theme',t);
+    if(t==='dark'){moon.style.display='block';sun.style.display='none';}
+    else{sun.style.display='block';moon.style.display='none';}
+  }
+  setTheme(localStorage.getItem('omplay-theme')||'dark');
+  btn.addEventListener('click',function(){setTheme(html.getAttribute('data-theme')==='dark'?'light':'dark');});
+
+  /* ── NAVBAR SCROLL ── */
+  var nav=document.getElementById('nav');
+  var navCta=document.getElementById('nav-cta');
+  window.addEventListener('scroll',function(){
+    if(window.scrollY>60){nav.classList.add('scrolled');navCta.style.display='inline-flex';}
+    else{nav.classList.remove('scrolled');navCta.style.display='none';}
+  },{passive:true});
+
+  /* ── HAMBURGER ── */
+  var ham=document.getElementById('hamburger'),
+      menu=document.getElementById('mobile-menu'),
+      hamOpen=document.getElementById('ham-open'),
+      hamClose=document.getElementById('ham-close');
+  ham.addEventListener('click',function(){
+    var open=menu.classList.toggle('open');
+    hamOpen.style.display=open?'none':'block';
+    hamClose.style.display=open?'block':'none';
+  });
+  document.querySelectorAll('.mobile-link,.mobile-menu .btn').forEach(function(a){
+    a.addEventListener('click',function(){
+      menu.classList.remove('open');
+      hamOpen.style.display='block';
+      hamClose.style.display='none';
+    });
+  });
+
+  /* ── COURSE FILTER ── */
+  var tabs=document.querySelectorAll('.ftab'),
+      cards=document.querySelectorAll('.course-card');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click',function(){
+      tabs.forEach(function(t){t.classList.remove('active');});
+      tab.classList.add('active');
+      var cat=tab.getAttribute('data-cat');
+      cards.forEach(function(c){
+        c.style.display=(cat==='todos'||c.getAttribute('data-cat')===cat)?'':'none';
+      });
+    });
+  });
+
+  /* ── FAQ ── */
+  document.querySelectorAll('.faq-q').forEach(function(q){
+    q.addEventListener('click',function(){
+      var item=q.closest('.faq-item');
+      var wasOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open');});
+      if(!wasOpen)item.classList.add('open');
+    });
+  });
+
+  /* ── REVEAL ── */
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');}});
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){observer.observe(el);});
+
+  /* ── ANIMATED COUNTERS ── */
+  var counted=false;
+  var countObserver=new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting&&!counted){
+      counted=true;
+      document.querySelectorAll('[data-count]').forEach(function(el){
+        var end=parseInt(el.getAttribute('data-count')),
+            suffix=el.getAttribute('data-suffix')||'',
+            dur=1400,
+            start=Date.now();
+        (function tick(){
+          var p=Math.min((Date.now()-start)/dur,1);
+          var ease=1-Math.pow(1-p,3);
+          var val=Math.floor(ease*end);
+          el.textContent=(val>=1000?(val/1000).toFixed(1)+'k':val)+suffix;
+          if(p<1)requestAnimationFrame(tick);
+        })();
+      });
+    }
+  },{threshold:.5});
+  var statsSection=document.getElementById('stats');
+  if(statsSection)countObserver.observe(statsSection);
+})();
+</script>
+</body>
+</html>

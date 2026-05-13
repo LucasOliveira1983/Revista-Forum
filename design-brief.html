@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMplay — Design Brief v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ─────────────────────────────── */
+:root {
+  --red:     #c41e3a;
+  --gold:    #d4a017;
+  --green:   #22c55e;
+  --blue:    #4e9bfa;
+  --purple:  #9f7aea;
+  --amber:   #f59e0b;
+
+  --bg:      #0b0b0e;
+  --surface: #111115;
+  --card:    #18181d;
+  --border:  #27272e;
+  --text:    #f0f0f3;
+  --text2:   #86869a;
+  --text3:   #38384a;
+
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans:  'Inter', system-ui, sans-serif;
+  --radius:     10px;
+  --t:          220ms ease;
+  --shadow:     0 2px 16px rgba(0,0,0,.35);
+}
+[data-theme="light"] {
+  --bg:      #f6f6f8;
+  --surface: #ffffff;
+  --card:    #ffffff;
+  --border:  #e4e4ea;
+  --text:    #111118;
+  --text2:   #6b6b7d;
+  --text3:   #d0d0dc;
+  --shadow:  0 2px 16px rgba(0,0,0,.08);
+}
+
+/* ─── RESET & BASE ────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  transition: background var(--t), color var(--t);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--red); text-decoration: none; }
+code {
+  background: var(--border);
+  color: var(--text2);
+  padding: .15em .45em;
+  border-radius: 4px;
+  font-size: .85em;
+  font-family: 'Menlo', monospace;
+}
+strong { font-weight: 600; color: var(--text); }
+
+/* ─── THEME TOGGLE ────────────────────────── */
+#toggle {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  transition: background var(--t), border-color var(--t), color var(--t);
+}
+#toggle:hover { color: var(--text); border-color: var(--text3); }
+#toggle svg { transition: transform .3s; }
+
+/* ─── LAYOUT ────────────────────────────────- */
+.container { max-width: 840px; margin: 0 auto; padding: 0 1.25rem; }
+@media (min-width: 640px) { .container { padding: 0 2rem; } }
+
+.section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
+.section:last-of-type { border-bottom: none; }
+
+/* ─── COVER ─────────────────────────────────- */
+.cover {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+@media (min-width: 640px) { .cover { padding: 3rem 4rem; } }
+@media (min-width: 900px) { .cover { padding: 4rem 5rem; } }
+
+.cover-glow {
+  position: absolute;
+  width: 480px; height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,30,58,.1) 0%, transparent 70%);
+  top: -160px; right: -160px;
+  pointer-events: none;
+}
+[data-theme="light"] .cover-glow { background: radial-gradient(circle, rgba(196,30,58,.06) 0%, transparent 70%); }
+
+.cover-logo {
+  display: flex; align-items: center; gap: .65rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem; font-weight: 800;
+  color: var(--text);
+  position: relative; z-index: 1;
+}
+.cover-logo-icon {
+  width: 38px; height: 38px;
+  background: var(--red);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.cover-logo span { color: var(--red); }
+
+.cover-body { position: relative; z-index: 1; }
+.cover-chip {
+  display: inline-flex; align-items: center; gap: .5rem;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: .72rem; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: .3rem .85rem; border-radius: 2rem;
+  margin-bottom: 1.75rem;
+}
+.cover-chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+.cover-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  font-weight: 900;
+  line-height: 1.07;
+  letter-spacing: -.02em;
+  margin-bottom: .9rem;
+}
+.cover-title em { color: var(--red); font-style: normal; }
+.cover-sub {
+  font-size: clamp(.9rem, 2vw, 1.05rem);
+  color: var(--text2);
+  max-width: 520px;
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+}
+.cover-meta {
+  display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem;
+}
+.meta-item label {
+  display: block;
+  font-size: .65rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: .25rem;
+}
+.meta-item span { font-size: .85rem; color: var(--text2); }
+
+.cover-bottom {
+  display: flex; justify-content: space-between;
+  align-items: flex-end; flex-wrap: wrap; gap: 1.5rem;
+  position: relative; z-index: 1;
+}
+.author { display: flex; align-items: center; gap: .85rem; }
+.author-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), #8b1225);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700;
+  color: #fff; flex-shrink: 0;
+}
+.author-name { font-weight: 600; font-size: .9rem; }
+.author-role { font-size: .75rem; color: var(--text2); margin-top: .1rem; }
+.cover-legal { font-size: .68rem; color: var(--text3); letter-spacing: .06em; text-align: right; line-height: 1.7; }
+
+/* ─── SECTION HEADER ───────────────────────── */
+.s-tag {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--red); margin-bottom: .5rem;
+}
+.s-tag::before { content: ''; width: 1.5rem; height: 2px; background: var(--red); border-radius: 1px; flex-shrink: 0; }
+.s-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.12;
+  margin-bottom: .65rem;
+}
+.s-lead { font-size: .95rem; color: var(--text2); line-height: 1.8; max-width: 640px; margin-bottom: 2.25rem; }
+
+/* ─── TOC ──────────────────────────────────── */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+.toc-label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); margin-bottom: 1.25rem; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: .25rem; }
+@media (min-width: 600px) { .toc-grid { grid-template-columns: 1fr 1fr; } }
+.toc-row {
+  display: flex; align-items: flex-start; gap: .75rem;
+  padding: .6rem .75rem; border-radius: 6px;
+  transition: background var(--t);
+  text-decoration: none; color: inherit;
+}
+.toc-row:hover { background: var(--border); }
+.toc-n { font-family: var(--font-serif); font-size: .8rem; font-weight: 700; color: var(--text3); min-width: 1.75rem; flex-shrink: 0; padding-top: .1rem; }
+.toc-info strong { display: block; font-size: .85rem; font-weight: 500; color: var(--text); line-height: 1.3; }
+.toc-info span { font-size: .75rem; color: var(--text2); }
+
+/* ─── CARDS ─────────────────────────────────- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+.card-title { font-weight: 600; font-size: .9rem; margin-bottom: .4rem; }
+.card-body { font-size: .85rem; color: var(--text2); line-height: 1.7; }
+
+.card-red   { border-color: rgba(196,30,58,.3); background: rgba(196,30,58,.05); }
+.card-green { border-color: rgba(34,197,94,.25); background: rgba(34,197,94,.04); }
+.card-blue  { border-color: rgba(78,155,250,.25); background: rgba(78,155,250,.04); }
+.card-gold  { border-color: rgba(212,160,23,.25); background: rgba(212,160,23,.04); }
+.card-purple{ border-color: rgba(159,122,234,.25); background: rgba(159,122,234,.04); }
+.card-amber { border-color: rgba(245,158,11,.25); background: rgba(245,158,11,.04); }
+
+[data-theme="light"] .card { box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+
+/* ─── GRIDS ─────────────────────────────────- */
+.g2, .g3, .g4 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 560px) { .g2 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 560px) { .g3 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 840px) { .g3 { grid-template-columns: 1fr 1fr 1fr; } }
+@media (min-width: 560px) { .g4 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 840px) { .g4 { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+
+/* ─── TAGS / CHIPS ──────────────────────────- */
+.chip {
+  display: inline-block;
+  font-size: .65rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: .2rem .6rem; border-radius: 2rem;
+}
+.chip-red    { background: rgba(196,30,58,.18); color: #e04060; }
+.chip-gold   { background: rgba(212,160,23,.18); color: #cda020; }
+.chip-green  { background: rgba(34,197,94,.18); color: #1ead58; }
+.chip-blue   { background: rgba(78,155,250,.18); color: #4e9bfa; }
+.chip-purple { background: rgba(159,122,234,.18); color: #9f7aea; }
+.chip-grey   { background: var(--border); color: var(--text2); }
+
+/* ─── PLAN CARDS ────────────────────────────- */
+.plan-grid { display: grid; grid-template-columns: 1fr; gap: .875rem; }
+@media (min-width: 500px) { .plan-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px) { .plan-grid { grid-template-columns: repeat(5, 1fr); } }
+
+.plan-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex; flex-direction: column;
+  gap: .35rem;
+}
+.plan-card.p-featured { border-color: var(--red); }
+.plan-card.p-premium  { border-color: var(--gold); }
+.plan-card.p-social   { border-color: var(--green); }
+.plan-card.p-omplay   { border-color: var(--blue); }
+[data-theme="light"] .plan-card { box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+
+.plan-name { font-family: var(--font-serif); font-size: 1rem; font-weight: 700; }
+.plan-price { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 900; line-height: 1.1; margin-top: .25rem; }
+.plan-note { font-size: .7rem; color: var(--text2); }
+.plan-list { list-style: none; margin-top: .75rem; display: flex; flex-direction: column; gap: .3rem; }
+.plan-list li { font-size: .78rem; color: var(--text2); display: flex; gap: .45rem; line-height: 1.4; }
+.plan-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+.plan-list li.off::before { content: '—'; color: var(--text3); }
+
+/* ─── METRICS ───────────────────────────────- */
+.metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .875rem; }
+@media (min-width: 840px) { .metric-grid { grid-template-columns: repeat(4, 1fr); } }
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  text-align: center;
+}
+.metric-val { font-family: var(--font-serif); font-size: 2rem; font-weight: 900; line-height: 1; }
+.metric-lbl { font-size: .7rem; color: var(--text2); margin-top: .35rem; text-transform: uppercase; letter-spacing: .04em; line-height: 1.4; }
+
+/* ─── TABLE ─────────────────────────────────- */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+thead th { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text2); padding: .75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+tbody td { padding: .85rem 1rem; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; line-height: 1.5; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--border); }
+tbody td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+.td-bad { color: #e04060 !important; font-weight: 500 !important; }
+.td-good { color: #22c55e !important; font-weight: 500 !important; }
+
+/* ─── ROADMAP ────────────────────────────────  */
+.roadmap-grid { display: grid; grid-template-columns: 1fr; gap: .875rem; }
+@media (min-width: 560px) { .roadmap-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 840px) { .roadmap-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.roadmap-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+.roadmap-accent {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.rmap-phase { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red); margin-bottom: .35rem; }
+.rmap-week { font-family: var(--font-serif); font-size: .85rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; }
+.rmap-title { font-size: .8rem; font-weight: 600; color: var(--text); margin-bottom: .8rem; line-height: 1.35; }
+.rmap-items { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+.rmap-items li { font-size: .74rem; color: var(--text2); display: flex; gap: .4rem; line-height: 1.4; }
+.rmap-items li::before { content: '→'; color: var(--red); flex-shrink: 0; }
+
+/* ─── FUNNEL ─────────────────────────────────  */
+.funnel { display: flex; flex-direction: column; gap: 2px; max-width: 440px; margin: 1.5rem auto 0; }
+.funnel-step {
+  padding: .9rem 1.25rem;
+  text-align: center;
+  clip-path: polygon(4% 0%, 96% 0%, 100% 100%, 0% 100%);
+}
+.funnel-step:last-child { clip-path: polygon(8% 0%, 92% 0%, 88% 100%, 12% 100%); }
+.funnel-lbl { font-size: .8rem; font-weight: 600; color: #fff; }
+.funnel-sub { font-size: .68rem; color: rgba(255,255,255,.7); margin-top: .15rem; }
+
+/* ─── CHANNELS ───────────────────────────────  */
+.channel {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.ch-icon {
+  width: 38px; height: 38px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ch-main { flex: 1; min-width: 0; }
+.ch-head { display: flex; justify-content: space-between; align-items: flex-start; gap: .75rem; flex-wrap: wrap; margin-bottom: .35rem; }
+.ch-name { font-weight: 600; font-size: .9rem; }
+.ch-body { font-size: .8rem; color: var(--text2); line-height: 1.65; }
+.ch-cac { font-size: .7rem; color: var(--text2); margin-top: .3rem; }
+
+/* ─── PRODUCT CARD ───────────────────────────  */
+.product-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.product-img { aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+.product-body { padding: 1.1rem; }
+.product-name { font-weight: 600; font-size: .9rem; margin-bottom: .3rem; }
+.product-desc { font-size: .8rem; color: var(--text2); line-height: 1.6; }
+.product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: .75rem; flex-wrap: wrap; gap: .5rem; }
+.product-price { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 800; }
+.product-note { font-size: .7rem; color: var(--text2); margin-top: .3rem; }
+
+/* ─── PRINCIPLE ──────────────────────────────  */
+.principle {
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  padding: 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.p-num {
+  font-family: var(--font-serif); font-size: 1.6rem; font-weight: 900;
+  color: var(--text3); line-height: 1; flex-shrink: 0; min-width: 2rem;
+}
+.p-title { font-weight: 600; font-size: .9rem; margin-bottom: .3rem; }
+.p-body { font-size: .84rem; color: var(--text2); line-height: 1.7; }
+
+/* ─── STEPS (numbered list) ──────────────────  */
+.step {
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  padding: 1.1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.step-num {
+  font-family: var(--font-serif); font-size: 1.3rem; font-weight: 900;
+  color: var(--text3); line-height: 1; flex-shrink: 0; min-width: 1.75rem;
+  padding-top: .1rem;
+}
+
+/* ─── HOMEPAGE SEQUENCE ──────────────────────  */
+.seq-step {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.seq-n {
+  font-family: var(--font-serif); font-size: 1.2rem; font-weight: 900;
+  color: rgba(196,30,58,.35); flex-shrink: 0; min-width: 1.6rem; line-height: 1.2;
+}
+
+/* ─── QUOTE ──────────────────────────────────  */
+.pullquote {
+  border-left: 3px solid var(--red);
+  padding: 1.1rem 1.5rem;
+  margin: 1.75rem 0;
+  background: rgba(196,30,58,.04);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.pullquote p {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.6;
+}
+.pullquote cite {
+  display: block; font-size: .75rem; color: var(--text2);
+  margin-top: .6rem; font-style: normal;
+}
+
+/* ─── SWATCHES ───────────────────────────────  */
+.swatches { display: flex; gap: .75rem; flex-wrap: wrap; }
+.swatch { flex: 1; min-width: 80px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.swatch-color { height: 56px; }
+.swatch-body { padding: .5rem .6rem; background: var(--card); }
+.swatch-name { font-size: .7rem; font-weight: 600; color: var(--text); }
+.swatch-hex  { font-size: .65rem; color: var(--text2); font-family: monospace; }
+
+/* ─── TYPE DEMO ──────────────────────────────  */
+.type-demo {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1rem;
+}
+.type-label { font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); font-weight: 700; margin-bottom: .75rem; }
+.type-serif { font-family: var(--font-serif); font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 800; line-height: 1.2; }
+.type-sans  { font-size: .9rem; color: var(--text2); line-height: 1.8; margin-top: .65rem; }
+.type-note  { font-size: .7rem; color: var(--text3); margin-top: .6rem; }
+
+/* ─── UTILS ──────────────────────────────────  */
+.label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text2); margin-bottom: .75rem; display: block; }
+.mt1  { margin-top: .5rem; }
+.mt2  { margin-top: 1rem; }
+.mt3  { margin-top: 1.75rem; }
+.mt4  { margin-top: 2.5rem; }
+.mb2  { margin-bottom: 1rem; }
+.mb3  { margin-bottom: 1.75rem; }
+.mb4  { margin-bottom: 2.5rem; }
+.gap-col { display: flex; flex-direction: column; gap: .75rem; }
+.text-red   { color: var(--red); }
+.text-gold  { color: var(--gold); }
+.text-green { color: var(--green); }
+.text-blue  { color: var(--blue); }
+.text-muted { color: var(--text2); }
+
+/* ─── DOC FOOTER ─────────────────────────────  */
+.doc-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 3rem 1.25rem;
+  display: flex; justify-content: space-between;
+  align-items: flex-end; flex-wrap: wrap; gap: 2rem;
+}
+@media (min-width: 640px) { .doc-footer { padding: 4rem 5rem; } }
+.footer-brand { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 800; }
+.footer-brand span { color: var(--red); }
+
+/* ─── PRINT ──────────────────────────────────  */
+@media print {
+  #toggle { display: none; }
+  .cover { background: #0b0b0e !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section { page-break-before: always; }
+  body { background: #fff; color: #111; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── TOGGLE ── -->
+<button id="toggle" aria-label="Alternar tema" title="Alternar dark/light mode">
+  <svg id="ico-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  <svg id="ico-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<!-- ══════════════════════════════════
+     CAPA
+══════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-glow"></div>
+
+  <div class="cover-logo">
+    <div class="cover-logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    OM<span>play</span>
+  </div>
+
+  <div class="cover-body">
+    <div class="cover-chip"><span class="cover-chip-dot"></span>Design Brief &middot; Versão 1.0 &middot; Confidencial</div>
+    <h1 class="cover-title">
+      Estratégia de<br>
+      <em>Crescimento</em><br>
+      &amp; Monetização
+    </h1>
+    <p class="cover-sub">
+      Plano completo de relançamento da plataforma OMplay — da arquitetura de aquisição
+      paga ao ecossistema de planos, produtos físicos e relatórios Data Fórum.
+    </p>
+    <div class="cover-meta">
+      <div class="meta-item"><label>Cliente</label><span>Revista Fórum / OMplay</span></div>
+      <div class="meta-item"><label>Entrega</label><span>Maio 2025</span></div>
+      <div class="meta-item"><label>Versão</label><span>v1.0 — Draft</span></div>
+      <div class="meta-item"><label>Foco</label><span>Aquisição &amp; Monetização</span></div>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="author">
+      <div class="author-avatar">LR</div>
+      <div>
+        <p class="author-name">Lucas Rios</p>
+        <p class="author-role">UX/UI Designer — Jornalismo Digital &amp; Estratégia de Produto</p>
+      </div>
+    </div>
+    <div class="cover-legal">
+      Documento confidencial<br>
+      Preparado exclusivamente para Revista Fórum &amp; OMplay
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ÍNDICE
+══════════════════════════════════ -->
+<div class="section" id="toc">
+  <div class="container">
+    <div class="s-tag">Índice</div>
+    <h2 class="s-title">Conteúdo</h2>
+    <div class="toc mt2">
+      <p class="toc-label">12 seções</p>
+      <div class="toc-grid">
+        <a href="#s01" class="toc-row"><span class="toc-n">01</span><div class="toc-info"><strong>Diagnóstico &amp; Oportunidade</strong><span>Por que relançar e o que está em jogo</span></div></a>
+        <a href="#s02" class="toc-row"><span class="toc-n">02</span><div class="toc-info"><strong>Filosofia &amp; Princípios</strong><span>Os conceitos que guiam cada decisão</span></div></a>
+        <a href="#s03" class="toc-row"><span class="toc-n">03</span><div class="toc-info"><strong>Design System</strong><span>Paleta, tipografia, tokens e componentes</span></div></a>
+        <a href="#s04" class="toc-row"><span class="toc-n">04</span><div class="toc-info"><strong>Ecossistema de Planos</strong><span>Gratuito, Essencial, OMplay, Premium e Social</span></div></a>
+        <a href="#s05" class="toc-row"><span class="toc-n">05</span><div class="toc-info"><strong>Loja Fórum — Produtos Físicos</strong><span>Café, bonés e estratégia de merchandise</span></div></a>
+        <a href="#s06" class="toc-row"><span class="toc-n">06</span><div class="toc-info"><strong>Data Fórum</strong><span>Instituto de pesquisas e relatórios premium</span></div></a>
+        <a href="#s07" class="toc-row"><span class="toc-n">07</span><div class="toc-info"><strong>Estratégia de Aquisição Paga</strong><span>Canais, funil e relançamento constante</span></div></a>
+        <a href="#s08" class="toc-row"><span class="toc-n">08</span><div class="toc-info"><strong>Arquitetura de Informação</strong><span>Homepage, fluxos e jornadas</span></div></a>
+        <a href="#s09" class="toc-row"><span class="toc-n">09</span><div class="toc-info"><strong>Antes × Depois</strong><span>O que muda em cada camada</span></div></a>
+        <a href="#s10" class="toc-row"><span class="toc-n">10</span><div class="toc-info"><strong>Métricas &amp; Projeções</strong><span>ROI esperado por vertical de receita</span></div></a>
+        <a href="#s11" class="toc-row"><span class="toc-n">11</span><div class="toc-info"><strong>Roadmap de Implementação</strong><span>Fases, prioridades e cronograma</span></div></a>
+        <a href="#s12" class="toc-row"><span class="toc-n">12</span><div class="toc-info"><strong>Próximos Passos</strong><span>Como avançar para produção</span></div></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     01 — DIAGNÓSTICO
+══════════════════════════════════ -->
+<div class="section" id="s01">
+  <div class="container">
+    <div class="s-tag">01 &mdash; Diagnóstico &amp; Oportunidade</div>
+    <h2 class="s-title">Visão Estratégica</h2>
+    <p class="s-lead">O OMplay foi lançado com todos os ativos corretos: credibilidade da Revista Fórum, curadoria acadêmica de alto nível e uma rede de parceiros progressistas consolidada. O desafio não é o produto — é a <strong>esteira de aquisição</strong>. Sem um fluxo constante de novos assinantes impulsionado por publicidade paga, qualquer plataforma de assinatura enfrenta churn sem reposição.</p>
+
+    <div class="g2 mb3">
+      <div class="card card-red">
+        <p class="card-title text-red">O Problema Central</p>
+        <p class="card-body">O OMplay tem credibilidade editorial mas baixa visibilidade de produto. A plataforma não aparece organicamente para quem não conhece a Revista Fórum. O funil de aquisição depende do tráfego orgânico existente — que não cresce sem publicidade. Resultado: pico de assinantes no lançamento, queda gradual nos meses seguintes sem reposição constante.</p>
+      </div>
+      <div class="card card-green">
+        <p class="card-title text-green">A Oportunidade</p>
+        <p class="card-body">Construir uma máquina de aquisição paga segmentada, aliada a um ecossistema diversificado: assinatura do site, cursos, produtos físicos (café + boné) e relatórios de pesquisa. Cada vertical sustenta as outras e aumenta o ticket médio por assinante.</p>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      <p>"Uma plataforma de assinatura sem máquina de aquisição é um produto esperando por clientes que não vão chegar sozinhos. Publicidade paga não é custo — é o motor do crescimento."</p>
+    </div>
+
+    <div class="g4 mt3">
+      <div class="card" style="text-align:center">
+        <p class="metric-val text-red" style="font-size:2rem">4</p>
+        <p class="metric-lbl">Verticais de receita</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <p class="metric-val text-gold" style="font-size:2rem">5</p>
+        <p class="metric-lbl">Planos por perfil</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <p class="metric-val text-green" style="font-size:2rem">7+</p>
+        <p class="metric-lbl">Canais de mídia paga</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <p class="metric-val text-blue" style="font-size:2rem">24</p>
+        <p class="metric-lbl">Anos de credibilidade editorial</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     02 — FILOSOFIA
+══════════════════════════════════ -->
+<div class="section" id="s02">
+  <div class="container">
+    <div class="s-tag">02 &mdash; Filosofia &amp; Princípios</div>
+    <h2 class="s-title">Fundamentos do Projeto</h2>
+    <p class="s-lead">Cada decisão de produto, design e publicidade deriva de seis princípios orientadores que equilibram crescimento comercial com a integridade editorial que faz o Fórum e o OMplay únicos.</p>
+
+    <div class="gap-col">
+      <div class="principle">
+        <span class="p-num">01</span>
+        <div><p class="p-title">Credibilidade É o Produto</p><p class="p-body">Em um mercado saturado de plataformas de cursos, o diferencial do OMplay não é o preço — é a legitimidade. Toda a comunicação publicitária deve colocar a Revista Fórum e os intelectuais parceiros em primeiro plano. A marca vende; o preço converte.</p></div>
+      </div>
+      <div class="principle">
+        <span class="p-num">02</span>
+        <div><p class="p-title">Fluxo Constante, Não Picos Isolados</p><p class="p-body">O objetivo não é um grande relançamento seguido de silêncio. É construir campanhas always-on com orçamentos menores e segmentação precisa — que trazem entre 200 e 500 novos assinantes todo mês, de forma previsível e escalável.</p></div>
+      </div>
+      <div class="principle">
+        <span class="p-num">03</span>
+        <div><p class="p-title">Cada Plano, um Perfil — Sem Alienar Nenhum</p><p class="p-body">A estratégia de planos não é over-engineering — é inclusão deliberada. Do estudante bolsista ao assinante premium que recebe café em casa, todos os perfis encontram um ponto de entrada. Nenhum é ignorado. Nenhum subsidia o outro sem estratégia.</p></div>
+      </div>
+      <div class="principle">
+        <span class="p-num">04</span>
+        <div><p class="p-title">Produtos Físicos Como Laço Emocional</p><p class="p-body">Um boné do Fórum ou um café com a marca OMplay não são apenas produtos — são declarações de identidade. O assinante que usa ou consume esses itens tem churn 3x menor do que o assinante digital puro.</p></div>
+      </div>
+      <div class="principle">
+        <span class="p-num">05</span>
+        <div><p class="p-title">Dados São Produto, Não Subproduto</p><p class="p-body">O Data Fórum não é um departamento interno — é uma vertical de receita com mercado próprio. Relatórios de monitoramento, pesquisas de opinião e análises eleitorais têm compradores qualificados: partidos políticos, ONGs, institutos e veículos de comunicação.</p></div>
+      </div>
+      <div class="principle">
+        <span class="p-num">06</span>
+        <div><p class="p-title">Publicidade Paga Com Alma Editorial</p><p class="p-body">As campanhas do OMplay não podem parecer anúncios de infoproduto. Devem parecer — e ser — extensões da identidade editorial do Fórum: sérias, profundas, provocadoras. Creative quality é o principal diferencial de performance em plataformas programáticas.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     03 — DESIGN SYSTEM
+══════════════════════════════════ -->
+<div class="section" id="s03">
+  <div class="container">
+    <div class="s-tag">03 &mdash; Design System</div>
+    <h2 class="s-title">Identidade Visual</h2>
+    <p class="s-lead">O design system do OMplay herda o DNA visual da Revista Fórum, com extensões para o contexto de plataforma digital — incorporando elementos de streaming premium e e-commerce de confiança.</p>
+
+    <span class="label">Paleta de Cores</span>
+    <div class="swatches mb3">
+      <div class="swatch"><div class="swatch-color" style="background:#c41e3a"></div><div class="swatch-body"><p class="swatch-name">Vermelho Editorial</p><p class="swatch-hex">#c41e3a</p></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#e83a3a"></div><div class="swatch-body"><p class="swatch-name">Vermelho Vivo</p><p class="swatch-hex">#e83a3a</p></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#0b0b0e"></div><div class="swatch-body"><p class="swatch-name">Background</p><p class="swatch-hex">#0b0b0e</p></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#17171c"></div><div class="swatch-body"><p class="swatch-name">Card</p><p class="swatch-hex">#17171c</p></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#f5c518"></div><div class="swatch-body"><p class="swatch-name">Gold / Breaking</p><p class="swatch-hex">#f5c518</p></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#22c55e"></div><div class="swatch-body"><p class="swatch-name">Social / Free</p><p class="swatch-hex">#22c55e</p></div></div>
+    </div>
+
+    <span class="label">Tipografia</span>
+    <div class="type-demo">
+      <p class="type-label">Playfair Display — Headers, títulos editoriais &amp; preços</p>
+      <p class="type-serif">Conhecimento que a<br>grande mídia não te dá.</p>
+      <p class="type-note">Uso: hero, manchetes, títulos de seção, preços em destaque &middot; Pesos: 600–900 &middot; Google Fonts</p>
+    </div>
+    <div class="type-demo">
+      <p class="type-label">Inter — Interface, corpo, metadados e e-commerce</p>
+      <p class="type-sans">Acesse mais de 47 cursos com os maiores pensadores progressistas do Brasil. Curadoria do Prof. Sergio Amadeu da Silveira (USP/UFABC). Certificado incluso em todos os planos. Assine por R$&nbsp;39,90/mês.</p>
+      <p class="type-note">Uso: corpo de texto, navegação, botões, descrições de produto &middot; Pesos: 300–700 &middot; Google Fonts</p>
+    </div>
+
+    <div class="card mt3">
+      <span class="label">Tokens CSS</span>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.25rem">
+        <code>--color-brand: #c41e3a</code>
+        <code>--color-bg: #0b0b0e</code>
+        <code>--color-surface: #111115</code>
+        <code>--color-card: #17171c</code>
+        <code>--radius-card: 10px</code>
+        <code>--font-serif: 'Playfair Display'</code>
+        <code>--font-sans: 'Inter'</code>
+        <code>--transition: 220ms ease</code>
+        <code>--color-social: #22c55e</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     04 — PLANOS
+══════════════════════════════════ -->
+<div class="section" id="s04">
+  <div class="container">
+    <div class="s-tag">04 &mdash; Ecossistema de Planos</div>
+    <h2 class="s-title">Arquitetura de Planos</h2>
+    <p class="s-lead">Cinco planos que cobrem todos os perfis de assinante — do estudante em situação de vulnerabilidade ao apoiador premium que quer consumir o Fórum de todas as formas.</p>
+
+    <div class="plan-grid mb4">
+      <div class="plan-card">
+        <span class="chip chip-grey">Acesso Livre</span>
+        <p class="plan-name">Descoberta</p>
+        <p class="plan-price" style="font-size:1.5rem">R$&nbsp;0</p>
+        <p class="plan-note">Para sempre grátis</p>
+        <ul class="plan-list">
+          <li>Acesso aos cursos (com publicidade)</li>
+          <li>Notícias com publicidade</li>
+          <li>Acesso ao catálogo completo</li>
+          <li class="off">Certificados de conclusão</li>
+          <li class="off">Revista semanal digital</li>
+          <li class="off">Produtos físicos</li>
+        </ul>
+      </div>
+
+      <div class="plan-card p-featured">
+        <span class="chip chip-red">Mais Popular</span>
+        <p class="plan-name">Assinante</p>
+        <p class="plan-price">R$&nbsp;19,90</p>
+        <p class="plan-note">por mês — cobrado anualmente</p>
+        <ul class="plan-list">
+          <li>Acesso aos cursos <strong>sem publicidade</strong></li>
+          <li>Revista Fórum digital toda sexta</li>
+          <li>Arquivo histórico completo</li>
+          <li class="off">Certificados de conclusão</li>
+          <li class="off">Produtos físicos</li>
+          <li class="off">Relatórios Data Fórum</li>
+        </ul>
+      </div>
+
+      <div class="plan-card p-omplay">
+        <span class="chip chip-blue">Plataforma</span>
+        <p class="plan-name">OMplay</p>
+        <p class="plan-price">R$&nbsp;39,90</p>
+        <p class="plan-note">por mês — cobrado anualmente</p>
+        <ul class="plan-list">
+          <li>Tudo do plano Assinante</li>
+          <li>Cursos <strong>completos</strong></li>
+          <li>Documentários e filmes</li>
+          <li>Aulas magnas ao vivo</li>
+          <li>Certificados de conclusão</li>
+          <li>1 acesso solidário incluso</li>
+        </ul>
+      </div>
+
+      <div class="plan-card p-premium">
+        <span class="chip chip-gold">Premium</span>
+        <p class="plan-name">Apoiador</p>
+        <p class="plan-price">R$&nbsp;79,90</p>
+        <p class="plan-note">por mês — cobrado anualmente</p>
+        <ul class="plan-list">
+          <li>Tudo do plano OMplay</li>
+          <li><strong>Café Fórum todo mês</strong></li>
+          <li><strong>Boné Fórum na renovação</strong></li>
+          <li>Acesso antecipado a cursos</li>
+          <li>2 acessos solidários</li>
+          <li>Resumos Data Fórum</li>
+        </ul>
+      </div>
+
+      <div class="plan-card p-social">
+        <span class="chip chip-green">Acesso Social</span>
+        <p class="plan-name">Comunidade</p>
+        <p class="plan-price" style="font-size:1.5rem">Grátis</p>
+        <p class="plan-note">mediante validação</p>
+        <ul class="plan-list">
+          <li>Cursos OMplay completos</li>
+          <li>Certificados de conclusão</li>
+          <li>Estudantes, aposentados,<br>professores rede pública, ONGs</li>
+          <li class="off">Revista digital</li>
+          <li class="off">Produtos físicos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card mb3">
+      <span class="label">Funil de Upsell</span>
+      <div class="funnel">
+        <div class="funnel-step" style="background:rgba(255,255,255,.08)">
+          <p class="funnel-lbl">Descoberta — Grátis</p>
+          <p class="funnel-sub">1ª aula &amp; conteúdo com publicidade</p>
+        </div>
+        <div class="funnel-step" style="background:rgba(196,30,58,.35)">
+          <p class="funnel-lbl">Assinante — R$19,90/mês</p>
+          <p class="funnel-sub">Site sem publicidade + Revista</p>
+        </div>
+        <div class="funnel-step" style="background:rgba(78,155,250,.45)">
+          <p class="funnel-lbl">OMplay — R$39,90/mês</p>
+          <p class="funnel-sub">Cursos + certificados + solidário</p>
+        </div>
+        <div class="funnel-step" style="background:#d4a017">
+          <p class="funnel-lbl" style="color:#0b0b0e">Apoiador Premium — R$79,90/mês</p>
+          <p class="funnel-sub" style="color:rgba(11,11,14,.65)">Café mensal + Boné anual + Data Fórum</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">Plano Comunidade — Elegibilidade &amp; Validação</span>
+      <p class="card-body">Ativado mediante envio de comprovante digital. Elegíveis: (1) estudantes com renda per capita &lt; 1,5 salário mínimo — comprovante de matrícula + declaração de renda; (2) aposentados com benefício INSS &lt; 2 salários mínimos; (3) professores da rede pública municipal ou estadual — contracheque; (4) entidades sociais com CNPJ ativo de associação sem fins lucrativos. Validação automática via OCR + revisão manual em 24h. Renovação anual com revalidação.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     05 — PRODUTOS FÍSICOS
+══════════════════════════════════ -->
+<div class="section" id="s05">
+  <div class="container">
+    <div class="s-tag">05 &mdash; Produtos Físicos</div>
+    <h2 class="s-title">Loja Fórum</h2>
+    <p class="s-lead">Produtos físicos com a marca Fórum cumprem duas funções estratégicas simultâneas: geram receita direta e transformam assinantes em veículos de marketing orgânico. Um boné Fórum na rua ou um pacote de café na cozinha são declarações de identidade.</p>
+
+    <div class="g3 mb4">
+      <div class="product-card">
+        <div class="product-img" style="background:rgba(139,69,19,.12)">☕</div>
+        <div class="product-body">
+          <p class="product-name">Café Fórum</p>
+          <p class="product-desc">Café especial selecionado, torrado artesanalmente. Grãos de produtores cooperativados. 250g — blend "Outro Mundo em Debate". Embalagem com design editorial.</p>
+          <div class="product-footer">
+            <p class="product-price">R$&nbsp;34,90</p>
+            <span class="chip chip-gold">Plano Premium</span>
+          </div>
+          <p class="product-note">Entrega mensal inclusa no plano Apoiador. Disponível avulso na loja.</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img" style="background:rgba(196,30,58,.1)">🧢</div>
+        <div class="product-body">
+          <p class="product-name">Boné Fórum</p>
+          <p class="product-desc">Boné estruturado 6 painéis, bordado com logo Fórum. Disponível em preto e vinho. Edição limitada com variações anuais.</p>
+          <div class="product-footer">
+            <p class="product-price">R$&nbsp;89,90</p>
+            <span class="chip chip-gold">Plano Premium</span>
+          </div>
+          <p class="product-note">1 boné na renovação anual do plano Apoiador. Disponível avulso.</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img" style="background:rgba(78,155,250,.08)">📦</div>
+        <div class="product-body">
+          <p class="product-name">Kit Boas-Vindas</p>
+          <p class="product-desc">1 boné, 1 pacote de café, 1 caderno Fórum e adesivos. Enviado no primeiro mês. Experiência de unboxing que gera conteúdo espontâneo nas redes.</p>
+          <div class="product-footer">
+            <p class="product-price">R$&nbsp;149,90</p>
+            <span class="chip chip-red">1ª Assinatura</span>
+          </div>
+          <p class="product-note">Enviado automaticamente na 1ª renovação do plano Apoiador.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card card-gold">
+        <p class="card-title text-gold">Estratégia de Merchandise</p>
+        <p class="card-body">Produtos físicos com identidade editorial forte têm poder de fidelização superior ao conteúdo digital. A lógica é a mesma de veículos como The Economist, Le Monde Diplo e Jacobin Magazine: o assinante que compra um produto físico tem churn 3x menor do que o assinante digital puro. O unboxing do Kit gera conteúdo espontâneo no Instagram e TikTok.</p>
+      </div>
+      <div class="card">
+        <p class="card-title">Operação Logística</p>
+        <p class="card-body">Integração com fulfillment terceirizado (Melhor Envio + parceiro em SP/RJ) para evitar overhead operacional. Gestão de estoque integrada ao painel de assinaturas. Rastreamento por e-mail + WhatsApp. Meta: entrega em até 5 dias úteis para capitais.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     06 — DATA FÓRUM
+══════════════════════════════════ -->
+<div class="section" id="s06">
+  <div class="container">
+    <div class="s-tag">06 &mdash; Data Fórum</div>
+    <h2 class="s-title">Instituto de Pesquisas</h2>
+    <p class="s-lead">O Data Fórum é uma vertical de receita com mercado próprio e compradores de alto valor. Relatórios de monitoramento político, pesquisas de opinião e análises de cenário têm demanda constante de um público que não é o mesmo do assinante de cursos.</p>
+
+    <div class="pullquote">
+      <p>"Dados bem produzidos e bem embalados valem entre R$&nbsp;500 e R$&nbsp;15.000 por relatório, dependendo da profundidade e do comprador. O Data Fórum já tem a credibilidade — falta o produto digital."</p>
+    </div>
+
+    <div class="g3 mb4">
+      <div class="card card-blue">
+        <p class="card-title text-blue">Monitoramento Político</p>
+        <p class="card-body">Relatórios mensais de monitoramento do discurso político nas redes, no Congresso e na mídia. Análise de narrativas e desinformação. PDF + dashboard interativo. Preço: R$&nbsp;290/mês (individual) a R$&nbsp;2.400/mês (institucional).</p>
+      </div>
+      <div class="card card-purple">
+        <p class="card-title" style="color:var(--purple)">Pesquisas de Opinião</p>
+        <p class="card-body">Sondagens nacionais com amostras representativas sobre temas políticos, culturais e eleitorais. Metodologia rigorosa com notas técnicas abertas. Ciclo bimestral. Preço avulso: R$&nbsp;490.</p>
+      </div>
+      <div class="card card-amber">
+        <p class="card-title" style="color:var(--amber)">Relatórios Eleitorais</p>
+        <p class="card-body">Análises especiais em anos eleitorais: cenários, tendências, coligações e comportamento do eleitor progressista. Alto valor para partidos, candidatos e consultores. Preço: R$&nbsp;1.500–R$&nbsp;8.000.</p>
+      </div>
+    </div>
+
+    <span class="label">Segmentos de Compradores</span>
+    <div class="g4 mb3">
+      <div class="card" style="text-align:center;padding:1.1rem">
+        <div style="font-size:1.6rem;margin-bottom:.5rem">🏛️</div>
+        <p style="font-weight:600;font-size:.82rem;margin-bottom:.25rem">Partidos Políticos</p>
+        <p class="card-body" style="font-size:.74rem">Relatórios eleitorais e monitoramento</p>
+      </div>
+      <div class="card" style="text-align:center;padding:1.1rem">
+        <div style="font-size:1.6rem;margin-bottom:.5rem">🏢</div>
+        <p style="font-weight:600;font-size:.82rem;margin-bottom:.25rem">ONGs e Fundações</p>
+        <p class="card-body" style="font-size:.74rem">Monitoramento para advocacy</p>
+      </div>
+      <div class="card" style="text-align:center;padding:1.1rem">
+        <div style="font-size:1.6rem;margin-bottom:.5rem">📰</div>
+        <p style="font-weight:600;font-size:.82rem;margin-bottom:.25rem">Veículos de Mídia</p>
+        <p class="card-body" style="font-size:.74rem">Dados para pautas jornalísticas</p>
+      </div>
+      <div class="card" style="text-align:center;padding:1.1rem">
+        <div style="font-size:1.6rem;margin-bottom:.5rem">🎓</div>
+        <p style="font-weight:600;font-size:.82rem;margin-bottom:.25rem">Pesquisadores</p>
+        <p class="card-body" style="font-size:.74rem">Dados para dissertações e teses</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">Integração com o OMplay</span>
+      <p class="card-body">Os relatórios Data Fórum são acessíveis em versão resumida para assinantes do plano Apoiador Premium. A versão completa é vendida separadamente ou via assinatura Data Fórum dedicada. Essa integração gera leads qualificados para o plano institucional. O Data Fórum também alimenta os cursos OMplay com dados frescos e exclusivos — diferencial de curadoria sem custo adicional.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     07 — AQUISIÇÃO PAGA
+══════════════════════════════════ -->
+<div class="section" id="s07">
+  <div class="container">
+    <div class="s-tag">07 &mdash; Estratégia de Aquisição Paga</div>
+    <h2 class="s-title">Motor de Crescimento</h2>
+    <p class="s-lead">A estratégia de aquisição paga do OMplay não é uma campanha de lançamento — é uma infraestrutura permanente de geração de demanda. Cada canal tem função específica no funil. Objetivo: 200–500 novos assinantes por mês com CAC controlado.</p>
+
+    <span class="label mb2">Canais Prioritários</span>
+    <div class="gap-col mb4">
+      <div class="channel">
+        <div class="ch-icon" style="background:rgba(37,99,235,.15)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </div>
+        <div class="ch-main">
+          <div class="ch-head">
+            <p class="ch-name">Meta Ads (Facebook + Instagram)</p>
+            <span class="chip chip-red">Funil Completo</span>
+          </div>
+          <p class="ch-body">Canal principal de aquisição de volume. Segmentação por interesse político, comportamento (seguidores de veículos progressistas, Fórum, Brasil 247) e lookalike audiences baseadas nos assinantes atuais. Formatos prioritários: carrossel de cursos, vídeo com depoimento de professor, stories com oferta limitada. Teste A/B contínuo — mínimo 3 variantes por campanha.</p>
+          <p class="ch-cac">CAC alvo: R$&nbsp;45–90</p>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="ch-icon" style="background:rgba(234,67,53,.12)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div class="ch-main">
+          <div class="ch-head">
+            <p class="ch-name">Google Ads — Search + Display</p>
+            <span class="chip chip-blue">Conversão</span>
+          </div>
+          <p class="ch-body"><strong>Search:</strong> palavras-chave com alta intenção — "curso política online", "plataforma jornalismo progressista", "cursos fascismo". <strong>Display:</strong> retargeting de visitantes que não converteram + banners em portais progressistas. <strong>Performance Max:</strong> campanha automática com feed do catálogo de cursos.</p>
+          <p class="ch-cac">CAC alvo: R$&nbsp;35–70</p>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="ch-icon" style="background:rgba(255,0,0,.1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        </div>
+        <div class="ch-main">
+          <div class="ch-head">
+            <p class="ch-name">YouTube Ads — Pre-roll &amp; Discovery</p>
+            <span class="chip chip-purple">Awareness + Conv.</span>
+          </div>
+          <p class="ch-body">Custo por visualização mais baixo e credibilidade mais alta para o público progressista. <strong>Pre-roll:</strong> anúncios 15–30s antes de vídeos de política e jornalismo. <strong>Discovery:</strong> cards patrocinados no YouTube do próprio Fórum e de canais parceiros. Acerta quem já conhece a marca mas nunca assinou.</p>
+          <p class="ch-cac">CAC alvo: R$&nbsp;50–95</p>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="ch-icon" style="background:rgba(159,122,234,.12)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </div>
+        <div class="ch-main">
+          <div class="ch-head">
+            <p class="ch-name">X (Twitter) Ads &amp; Influência Orgânica</p>
+            <span class="chip chip-grey">Consideração</span>
+          </div>
+          <p class="ch-body">X ainda concentra parte significativa do debate político brasileiro. Promoção de tweets com conteúdo educacional + threads dos professores parceiros. Combinado com impulsionamento orgânico dos perfis dos intelectuais curados — que têm alta credibilidade nessa audiência.</p>
+          <p class="ch-cac">CAC alvo: R$&nbsp;60–120</p>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="ch-icon" style="background:rgba(34,197,94,.1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="ch-main">
+          <div class="ch-head">
+            <p class="ch-name">WhatsApp &amp; E-mail Marketing</p>
+            <span class="chip chip-green">Conversão</span>
+          </div>
+          <p class="ch-body">Canal de menor CAC e maior taxa de conversão. <strong>WhatsApp:</strong> sequência de onboarding (3 mensagens em 7 dias) para leads gratuitos, com oferta de upgrade. <strong>E-mail:</strong> newsletter semanal de conteúdo editorial com CTA de assinatura. A lista do Fórum é um ativo estratégico.</p>
+          <p class="ch-cac">CAC alvo: R$&nbsp;12–30</p>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="ch-icon" style="background:rgba(212,160,23,.1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4a017" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div class="ch-main">
+          <div class="ch-head">
+            <p class="ch-name">Influenciadores &amp; Co-marketing</p>
+            <span class="chip chip-gold">Afiliados</span>
+          </div>
+          <p class="ch-body">Os 7 veículos parceiros (Brasil 247, DCM, Cafezinho, Barão de Itararé, Brasil de Fato, Socialista Morena, O Historiador) têm audiências somadas de milhões de seguidores. Co-marketing com link de afiliado + comissão por assinatura — os parceiros viram vendedores motivados.</p>
+          <p class="ch-cac">CAC alvo: R$&nbsp;20–50</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card card-red">
+        <p class="card-title text-red">Estratégia de Relançamento Permanente</p>
+        <p class="card-body">O relançamento não é um evento — é uma cadência. A cada 60 dias, uma nova "onda" de campanhas com ângulo diferente: lançamento de curso, aula magna especial, nova pesquisa Data Fórum ou campanha temática (eleições, Dia do Trabalho). Cada onda gera novidade real e reduz fadiga criativa.</p>
+      </div>
+      <div class="card">
+        <p class="card-title">Funil de Retargeting — 3 Camadas</p>
+        <p class="card-body">
+          <strong>Camada 1 — Visitantes:</strong> Quem visitou mas não se cadastrou. Oferta de 1ª aula gratuita. Janela: 7 dias.<br><br>
+          <strong>Camada 2 — Leads Gratuitos:</strong> Quem se cadastrou no plano grátis. Anúncio de upgrade com benefício específico. Janela: 30 dias.<br><br>
+          <strong>Camada 3 — Assinantes Base:</strong> Quem assina R$19,90. Upsell para OMplay ou Premium. Janela: 90 dias.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     08 — ARQUITETURA
+══════════════════════════════════ -->
+<div class="section" id="s08">
+  <div class="container">
+    <div class="s-tag">08 &mdash; Arquitetura de Informação</div>
+    <h2 class="s-title">Homepage &amp; Jornadas</h2>
+    <p class="s-lead">A homepage do OMplay é uma superfície de conversão — não apenas de conteúdo. Cada seção tem função específica no funil. A sequência foi projetada para conduzir o visitante da descoberta à assinatura em menos de 90 segundos de scroll.</p>
+
+    <span class="label">Sequência Editorial da Homepage</span>
+    <div class="gap-col">
+      <div class="seq-step"><span class="seq-n">1</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Navbar — Busca + Categorias + CTA "Assinar"</p><p class="card-body">Sticky. Categoria de acesso rápido + barra de busca expandível. Botão "Assinar" em vermelho persistente. Mobile: bottom navigation com Home, Busca, Loja e Minha Conta.</p></div></div>
+      <div class="seq-step"><span class="seq-n">2</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Hero Editorial — Headline + Proposta + 3 Thumbnails + CTA Único</p><p class="card-body">Headline emocional com destaque tipográfico. Subtítulo utilitário. Grid de 3 thumbnails de cursos em destaque. CTA único: "Comece agora por R$&nbsp;39,90/mês". Micro-copy: "Cancele quando quiser".</p></div></div>
+      <div class="seq-step"><span class="seq-n">3</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Barra de Parceiros — 7 logos em strip horizontal</p><p class="card-body">Comunica rede e credibilidade imediatamente abaixo do hero. Logos em grayscale com hover colorido. Ancora a percepção de que o OMplay é um ecossistema.</p></div></div>
+      <div class="seq-step"><span class="seq-n">4</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Contador de Prova Social — Assinantes + Cursos + Horas + Avaliação</p><p class="card-body">Quatro métricas com animação de contagem. Sinaliza escala e qualidade. Converte visitantes em primeira visita por validação social.</p></div></div>
+      <div class="seq-step"><span class="seq-n">5</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Cursos em Destaque — Cards com filtro por categoria</p><p class="card-body">6 cards em grid. Filtros: Política, História, Cultura, Economia, Antifascismo, Meio Ambiente. Card: imagem 16:9, badge de categoria, título, instrutor, duração, avaliação, tag "1ª aula grátis".</p></div></div>
+      <div class="seq-step"><span class="seq-n">6</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Seção de Planos — Comparativo com destaque no plano mais popular</p><p class="card-body">5 colunas com os planos. Destaque visual no plano OMplay. Seção de acesso solidário com box verde separado. FAQ accordeon com 5 perguntas.</p></div></div>
+      <div class="seq-step"><span class="seq-n">7</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Loja Fórum — Preview de produtos com CTA de plano Premium</p><p class="card-body">Grid de 3 produtos (café, boné, kit). Cada card com foto, preço e link para o plano Premium. Copy focada em identidade e comunidade.</p></div></div>
+      <div class="seq-step"><span class="seq-n">8</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Data Fórum — Prévia do último relatório com CTA de acesso</p><p class="card-body">Card com capa do relatório mais recente, resumo executivo e CTA para aquisição. Sinaliza o instituto como autoridade em dados políticos.</p></div></div>
+      <div class="seq-step"><span class="seq-n">9</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Depoimentos + Professores + Press Clippings</p><p class="card-body">Três sub-seções: (a) depoimentos de assinantes, (b) grid de professores com especialidade e universidade, (c) citações de veículos que cobriram o lançamento.</p></div></div>
+      <div class="seq-step"><span class="seq-n">10</span><div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Footer — Links + Selos de segurança + Redes sociais</p><p class="card-body">4 colunas: Conteúdo, OMplay, Loja, Legal. Selos: SSL 256-bit, PCI-DSS, LGPD. Bandeiras de pagamento. Texto de acesso solidário em destaque.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     09 — ANTES × DEPOIS
+══════════════════════════════════ -->
+<div class="section" id="s09">
+  <div class="container">
+    <div class="s-tag">09 &mdash; Comparativo</div>
+    <h2 class="s-title">Antes × Depois</h2>
+    <p class="s-lead">A transformação pode ser mensurada em cada camada da experiência — da percepção visual imediata ao modelo de receita completo.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Elemento</th><th>Antes</th><th>Depois</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Proposta de Valor</td><td class="td-bad">Não explicada em 3s</td><td class="td-good">Hero com headline + thumbnails + CTA</td></tr>
+          <tr><td>Modelo de Planos</td><td class="td-bad">1 único plano</td><td class="td-good">5 planos para todos os perfis</td></tr>
+          <tr><td>Produtos Físicos</td><td class="td-bad">Inexistentes</td><td class="td-good">Café mensal + boné anual no Premium</td></tr>
+          <tr><td>Data Fórum</td><td class="td-bad">Não monetizado</td><td class="td-good">Vertical de receita com página dedicada</td></tr>
+          <tr><td>Aquisição Paga</td><td class="td-bad">Ausente ou pontual</td><td class="td-good">7 canais always-on com CAC controlado</td></tr>
+          <tr><td>Prova Social</td><td class="td-bad">Inexistente</td><td class="td-good">Depoimentos, contadores, press clippings</td></tr>
+          <tr><td>Freemium</td><td class="td-bad">Sem camada gratuita</td><td class="td-good">1ª aula grátis em todos os cursos</td></tr>
+          <tr><td>Acesso Social</td><td class="td-bad">Sem programa formal</td><td class="td-good">Plano Comunidade com validação automática</td></tr>
+          <tr><td>Retargeting</td><td class="td-bad">Sem pixel instalado</td><td class="td-good">Funil de 3 camadas: 7, 30 e 90 dias</td></tr>
+          <tr><td>Afiliados</td><td class="td-bad">Sem programa</td><td class="td-good">Co-marketing com 7 parceiros via afiliado</td></tr>
+          <tr><td>Mobile</td><td class="td-bad">Desktop adaptado</td><td class="td-good">Mobile-first com bottom nav</td></tr>
+          <tr><td>Acessibilidade</td><td class="td-bad">Não contemplada</td><td class="td-good">WCAG AA: contraste, foco, aria-labels</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     10 — MÉTRICAS
+══════════════════════════════════ -->
+<div class="section" id="s10">
+  <div class="container">
+    <div class="s-tag">10 &mdash; Métricas &amp; Projeções</div>
+    <h2 class="s-title">Impacto Esperado</h2>
+    <p class="s-lead">Projeções baseadas em benchmarks do setor para plataformas de assinatura com perfil editorial similar e estratégias de publicidade paga equivalentes.</p>
+
+    <span class="label">Verticais de Receita — Projeção Anual (Ano 1)</span>
+    <div class="g2 mb4">
+      <div class="card card-red">
+        <p style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-bottom:.4rem">Planos OMplay</p>
+        <p style="font-family:var(--font-serif);font-size:1.9rem;font-weight:900;line-height:1">R$&nbsp;1,2M–2,4M</p>
+        <p class="card-body" style="font-size:.75rem;margin-top:.3rem">2.500–5.000 assinantes ativos</p>
+        <hr style="border:none;border-top:1px solid var(--border);margin:.9rem 0">
+        <p class="card-body" style="font-size:.8rem">Meta de 200–400 novos assinantes/mês com churn &lt; 8%. Mix: 50% OMplay (R$39,90), 30% Assinante (R$19,90), 15% Premium (R$79,90), 5% Comunidade.</p>
+      </div>
+      <div class="card card-gold">
+        <p style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem">Loja Fórum</p>
+        <p style="font-family:var(--font-serif);font-size:1.9rem;font-weight:900;line-height:1">R$&nbsp;180k–360k</p>
+        <p class="card-body" style="font-size:.75rem;margin-top:.3rem">Café + bonés + kits boas-vindas</p>
+        <hr style="border:none;border-top:1px solid var(--border);margin:.9rem 0">
+        <p class="card-body" style="font-size:.8rem">Baseado em 15% dos assinantes no plano Premium. Ticket médio mensal R$34,90 (café) + R$89,90/ano (boné). Vendas avulsas +20–30% ao total.</p>
+      </div>
+      <div class="card card-blue">
+        <p style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:.4rem">Data Fórum</p>
+        <p style="font-family:var(--font-serif);font-size:1.9rem;font-weight:900;line-height:1">R$&nbsp;240k–600k</p>
+        <p class="card-body" style="font-size:.75rem;margin-top:.3rem">Assinaturas + relatórios avulsos</p>
+        <hr style="border:none;border-top:1px solid var(--border);margin:.9rem 0">
+        <p class="card-body" style="font-size:.8rem">10–25 clientes institucionais (R$2.400/mês) + relatórios avulsos (R$490–1.500). Mercado B2B com ciclo de venda de 30–60 dias.</p>
+      </div>
+      <div class="card card-green">
+        <p style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:.4rem">Afiliados &amp; Co-marketing</p>
+        <p style="font-family:var(--font-serif);font-size:1.9rem;font-weight:900;line-height:1">R$&nbsp;60k–180k</p>
+        <p class="card-body" style="font-size:.75rem;margin-top:.3rem">Comissões + receita compartilhada</p>
+        <hr style="border:none;border-top:1px solid var(--border);margin:.9rem 0">
+        <p class="card-body" style="font-size:.8rem">Programa de afiliados com 7 parceiros. Comissão de 20–30% por assinatura convertida. Crescimento proporcional à ativação dos parceiros.</p>
+      </div>
+    </div>
+
+    <span class="label">KPIs Principais</span>
+    <div class="metric-grid">
+      <div class="metric-card"><p class="metric-val text-red">200–500</p><p class="metric-lbl">Novos assinantes/mês</p></div>
+      <div class="metric-card"><p class="metric-val text-gold">&lt;8%</p><p class="metric-lbl">Churn mensal máximo</p></div>
+      <div class="metric-card"><p class="metric-val text-green">R$45–90</p><p class="metric-lbl">CAC médio por canal</p></div>
+      <div class="metric-card"><p class="metric-val text-blue">R$380–960</p><p class="metric-lbl">LTV médio 12 meses</p></div>
+      <div class="metric-card"><p class="metric-val" style="color:var(--purple)">3.5–4x</p><p class="metric-lbl">LTV:CAC ratio</p></div>
+      <div class="metric-card"><p class="metric-val" style="color:var(--amber)">+35%</p><p class="metric-lbl">Conversão com redesign</p></div>
+      <div class="metric-card"><p class="metric-val text-green">90+</p><p class="metric-lbl">Lighthouse Performance</p></div>
+      <div class="metric-card"><p class="metric-val text-red">−27%</p><p class="metric-lbl">Bounce após redesign mobile</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     11 — ROADMAP
+══════════════════════════════════ -->
+<div class="section" id="s11">
+  <div class="container">
+    <div class="s-tag">11 &mdash; Roadmap</div>
+    <h2 class="s-title">Fases &amp; Cronograma</h2>
+    <p class="s-lead">Implementação em quatro fases progressivas de duas semanas cada, priorizando as ações de maior impacto imediato. Total: 8 semanas do kick-off ao lançamento.</p>
+
+    <div class="roadmap-grid mb4">
+      <div class="roadmap-card">
+        <div class="roadmap-accent" style="background:var(--red)"></div>
+        <p class="rmap-phase">Fase 1</p>
+        <p class="rmap-week">Semanas 1–2</p>
+        <p class="rmap-title">Fundação — Design System &amp; Quick Wins</p>
+        <ul class="rmap-items">
+          <li>Tokens CSS e tipografia</li>
+          <li>Paleta de cores e dark mode</li>
+          <li>Componentes base (cards, tags, navbar)</li>
+          <li>Pixel Meta Ads + GA4 instalados</li>
+          <li>Página de planos redesenhada</li>
+        </ul>
+      </div>
+      <div class="roadmap-card">
+        <div class="roadmap-accent" style="background:var(--blue)"></div>
+        <p class="rmap-phase">Fase 2</p>
+        <p class="rmap-week">Semanas 3–4</p>
+        <p class="rmap-title">Homepage &amp; Funil de Conversão</p>
+        <ul class="rmap-items">
+          <li>Hero com thumbnails + CTA</li>
+          <li>Seção de planos + FAQ accordeon</li>
+          <li>Prova social (depoimentos + contadores)</li>
+          <li>Preview da Loja na homepage</li>
+          <li>Meta Ads + Google Ads ativos</li>
+        </ul>
+      </div>
+      <div class="roadmap-card">
+        <div class="roadmap-accent" style="background:var(--gold)"></div>
+        <p class="rmap-phase">Fase 3</p>
+        <p class="rmap-week">Semanas 5–6</p>
+        <p class="rmap-title">Loja Fórum &amp; Data Fórum</p>
+        <ul class="rmap-items">
+          <li>Página de produtos (café + boné + kit)</li>
+          <li>Integração com fulfillment logístico</li>
+          <li>Página Data Fórum + relatório de amostra</li>
+          <li>Formulário B2B para institucionais</li>
+          <li>YouTube Ads + programa de afiliados</li>
+        </ul>
+      </div>
+      <div class="roadmap-card">
+        <div class="roadmap-accent" style="background:var(--green)"></div>
+        <p class="rmap-phase">Fase 4</p>
+        <p class="rmap-week">Semanas 7–8</p>
+        <p class="rmap-title">Mobile, Acessibilidade &amp; Otimização</p>
+        <ul class="rmap-items">
+          <li>Bottom navigation mobile + drawer menu</li>
+          <li>Auditoria WCAG AA + Lighthouse 90+</li>
+          <li>Onboarding (email + WhatsApp)</li>
+          <li>Plano Comunidade + validação</li>
+          <li>Relançamento oficial com campanha integrada</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">Stack Tecnológica Sugerida</span>
+      <div class="g2 mt2">
+        <div>
+          <p style="font-size:.82rem;font-weight:600;margin-bottom:.4rem">Front-end &amp; CMS</p>
+          <p class="card-body">Next.js 14 (App Router) para SSR e performance. Tailwind CSS alinhado ao design system. CMS headless: Strapi ou Sanity para gestão editorial independente da equipe de dev.</p>
+        </div>
+        <div>
+          <p style="font-size:.82rem;font-weight:600;margin-bottom:.4rem">Pagamentos &amp; Assinaturas</p>
+          <p class="card-body">Stripe ou PagarMe para assinaturas recorrentes. Pix, boleto e cartão. Webhook para ativação automática de planos. Portal do assinante self-service.</p>
+        </div>
+        <div>
+          <p style="font-size:.82rem;font-weight:600;margin-bottom:.4rem">Analytics &amp; Performance</p>
+          <p class="card-body">Google Analytics 4 com eventos customizados. Google Tag Manager para gerenciar pixels. Hotjar para gravações de sessão e mapas de calor.</p>
+        </div>
+        <div>
+          <p style="font-size:.82rem;font-weight:600;margin-bottom:.4rem">E-mail &amp; CRM</p>
+          <p class="card-body">ActiveCampaign ou Brevo para automações de e-mail (onboarding, churn prevention, upsell). Integração com WhatsApp Business API. CRM básico para leads B2B do Data Fórum.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     12 — PRÓXIMOS PASSOS
+══════════════════════════════════ -->
+<div class="section" id="s12">
+  <div class="container">
+    <div class="s-tag">12 &mdash; Próximos Passos</div>
+    <h2 class="s-title">Como Avançar</h2>
+    <p class="s-lead">O protótipo e este brief representam a visão completa da transformação. Para avançar para produção, os próximos passos são concretos e sequenciais.</p>
+
+    <div class="gap-col">
+      <div class="step">
+        <span class="step-num">1</span>
+        <div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Alinhamento Estratégico com a Equipe Fórum</p><p class="card-body">Apresentar este brief à equipe editorial e comercial. Definir orçamento mensal de mídia paga (mínimo recomendado: R$&nbsp;8.000–15.000/mês nos primeiros 6 meses). Aprovar a arquitetura de planos e produtos físicos.</p></div>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Seleção do Parceiro de Fulfillment</p><p class="card-body">Mapear fornecedor de café especial (cooperativa preferencial), fabricante dos bonés e parceiro logístico. Prazo para primeiro lote: coincide com a Fase 3 (semana 5).</p></div>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Auditoria do CMS &amp; Modelo de Dados</p><p class="card-body">Mapear estrutura atual do banco de dados e do CMS para garantir que os novos componentes (planos, produtos, relatórios) possam ser alimentados sem migração massiva.</p></div>
+      </div>
+      <div class="step">
+        <span class="step-num">4</span>
+        <div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Briefing do Data Fórum</p><p class="card-body">Mapear relatórios existentes e definir o produto mínimo viável: qual relatório será o lead magnet público, qual será o produto pago de entrada (R$&nbsp;490) e qual será a oferta institucional (R$&nbsp;2.400/mês).</p></div>
+      </div>
+      <div class="step">
+        <span class="step-num">5</span>
+        <div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Ativação do Programa de Afiliados</p><p class="card-body">Apresentar a proposta de co-marketing para os 7 parceiros. Definir estrutura de comissão (20–30%), links UTM exclusivos por parceiro e painel de acompanhamento. Projeção: primeiros 500 leads qualificados na semana 1.</p></div>
+      </div>
+      <div class="step">
+        <span class="step-num">6</span>
+        <div><p style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Testes de Usabilidade com Assinantes Atuais</p><p class="card-body">Sessões com 5–8 assinantes reais do Fórum e do OMplay para validar navegação, compreensão dos novos planos e percepção dos produtos físicos. Resultados informam ajustes antes da Fase 4.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="doc-footer">
+  <div>
+    <p class="footer-brand">OM<span>play</span>.com.br</p>
+    <p style="font-size:.78rem;color:var(--text2);margin-top:.35rem">Design Brief v1.0 — Estratégia de Crescimento &amp; Monetização</p>
+    <p style="font-size:.7rem;color:var(--text3);margin-top:.2rem">Documento confidencial &middot; Preparado para Revista Fórum &amp; OMplay</p>
+  </div>
+  <div style="text-align:right">
+    <div class="author" style="justify-content:flex-end">
+      <div style="text-align:right">
+        <p class="author-name">Lucas Rios</p>
+        <p class="author-role">UX/UI Designer — Jornalismo Digital &amp; Estratégia de Produto</p>
+        <p style="font-size:.7rem;color:var(--text3);margin-top:.25rem">Disponível para apresentação e alinhamento</p>
+      </div>
+      <div class="author-avatar">LR</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const html = document.documentElement;
+  const btn  = document.getElementById('toggle');
+  const sun  = document.getElementById('ico-sun');
+  const moon = document.getElementById('ico-moon');
+
+  const saved = localStorage.getItem('theme') || 'dark';
+  setTheme(saved);
+
+  btn.addEventListener('click', function(){
+    const current = html.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  function setTheme(t){
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+    if(t === 'dark'){
+      moon.style.display = 'block';
+      sun.style.display  = 'none';
+    } else {
+      sun.style.display  = 'block';
+      moon.style.display = 'none';
+    }
+  }
+})();
+</script>
+</body>
+</html>

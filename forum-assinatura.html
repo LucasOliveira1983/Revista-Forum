@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fórum Digital — Assine Agora</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: 'Montserrat', Arial, sans-serif;
+  background-image: url('background.png');
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  background-position: top center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+a { text-decoration: none; display: block; }
+
+/* ── WRAPPER ── */
+.page {
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+}
+
+/* ── COLORS ── */
+:root {
+  --red:    #B31B2E;
+  --red-h:  #971525;
+  --teal:   #00B5A7;
+  --white:  #FFFFFF;
+  --gray:   #E6E6E8;
+  --dark:   #222222;
+  --mid:    #555555;
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  background: var(--red);
+  color: #fff;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 800;
+  font-size: .85rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: .7rem 2.5rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background .2s;
+  text-align: center;
+}
+.btn:hover { background: var(--red-h); }
+.btn-full { width: 100%; }
+
+/* ═══════════════════════════════════
+   SECTION 1 — HERO
+═══════════════════════════════════ */
+#hero {
+  position: relative;
+  background: var(--white);
+  padding: 0;
+  overflow: hidden;
+}
+
+/* teal accent top-left */
+.hero-teal {
+  position: absolute;
+  top: 0; left: 0;
+  width: 14px;
+  height: 80px;
+  background: var(--teal);
+  z-index: 2;
+}
+
+/* diagonal white top */
+#hero::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 40px;
+  background: var(--gray);
+  clip-path: polygon(0 0, 100% 0, 100% 30%, 0 100%);
+  z-index: 1;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 42% 58%;
+  align-items: flex-start;
+  padding: 2.5rem 1rem 1.5rem;
+  gap: .75rem;
+}
+
+.hero-mag {
+  position: relative;
+}
+.hero-mag img,
+.hero-mag-placeholder {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+.hero-mag-placeholder {
+  background: linear-gradient(160deg, #1a1a2e, #b31b2e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-mag-placeholder span {
+  color: #fff;
+  font-weight: 900;
+  font-size: .85rem;
+  text-align: center;
+  padding: .5rem;
+  line-height: 1.3;
+}
+
+.hero-badge {
+  position: absolute;
+  top: -8px; right: -8px;
+  background: var(--red);
+  color: #fff;
+  font-weight: 800;
+  font-size: .55rem;
+  text-align: center;
+  line-height: 1.3;
+  padding: .35rem .45rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.hero-text {}
+.hero-title-small {
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--dark);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: .15rem;
+}
+.hero-title-big {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--red);
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin-bottom: .15rem;
+  letter-spacing: -.01em;
+}
+.hero-subtitle {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--dark);
+  text-transform: uppercase;
+  margin-bottom: .75rem;
+  letter-spacing: .03em;
+}
+.hero-benefits { list-style: none; margin-bottom: .9rem; }
+.hero-benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: .4rem;
+  font-size: .7rem;
+  color: var(--dark);
+  line-height: 1.4;
+  margin-bottom: .35rem;
+}
+.hero-benefits li::before {
+  content: '✔';
+  color: var(--dark);
+  font-size: .65rem;
+  flex-shrink: 0;
+  margin-top: .05rem;
+}
+.hero-benefits strong { color: var(--red); font-weight: 700; }
+
+/* diagonal white bottom */
+#hero::after {
+  content: '';
+  display: block;
+  height: 36px;
+  background: var(--gray);
+  clip-path: polygon(0 0, 100% 60%, 100% 100%, 0 100%);
+  position: relative;
+  z-index: 3;
+}
+
+/* ═══════════════════════════════════
+   SECTION 2 — FEATURES
+═══════════════════════════════════ */
+#features {
+  background: var(--white);
+  position: relative;
+  padding: 2.5rem 1.25rem 1.5rem;
+  margin-top: .5rem;
+}
+#features::after {
+  content: '';
+  display: block;
+  height: 36px;
+  background: var(--gray);
+  clip-path: polygon(0 0, 100% 60%, 100% 100%, 0 100%);
+  position: absolute;
+  bottom: -36px; left: 0; right: 0;
+}
+
+#features h2 {
+  font-size: .9rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--dark);
+  line-height: 1.3;
+  margin-bottom: 1.5rem;
+}
+#features h2 strong { color: var(--red); }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.feature-item { text-align: center; }
+.feature-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--gray);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto .5rem;
+  font-size: 1.4rem;
+}
+.feature-item p {
+  font-size: .68rem;
+  color: var(--dark);
+  line-height: 1.4;
+  font-weight: 500;
+}
+.feature-item p strong { font-weight: 700; display: block; margin-bottom: .1rem; }
+
+/* ═══════════════════════════════════
+   SECTION 3 — CONTENT CATEGORIES
+═══════════════════════════════════ */
+#categories {
+  background: var(--white);
+  position: relative;
+  padding: 3rem 1.25rem 1.5rem;
+  margin-top: .5rem;
+}
+#categories::after {
+  content: '';
+  display: block;
+  height: 36px;
+  background: var(--gray);
+  clip-path: polygon(0 0, 100% 60%, 100% 100%, 0 100%);
+  position: absolute;
+  bottom: -36px; left: 0; right: 0;
+}
+
+#categories h2 {
+  font-size: .92rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--dark);
+  margin-bottom: 1.25rem;
+  line-height: 1.3;
+}
+#categories h2 strong { color: var(--red); }
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .4rem;
+  margin-bottom: 1.25rem;
+}
+.cat-item {
+  border-radius: 4px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  position: relative;
+  display: flex; align-items: flex-end;
+}
+.cat-bg {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.cat-label {
+  position: relative; z-index: 2;
+  color: #fff;
+  font-size: .58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(0,0,0,.55);
+  padding: .2rem .35rem;
+  width: 100%;
+  text-align: center;
+}
+
+/* Category colors (placeholder) */
+.cat-politica .cat-bg  { background-color: #7B1A1A; }
+.cat-entrevistas .cat-bg { background-color: #1A3A7B; }
+.cat-tecnologia .cat-bg  { background-color: #1A6A4A; }
+.cat-cronicas .cat-bg    { background-color: #5A1A5A; }
+.cat-global .cat-bg      { background-color: #1A4A6A; }
+.cat-mambiente .cat-bg   { background-color: #2A6A2A; }
+.cat-economia .cat-bg    { background-color: #6A4A1A; }
+.cat-cultura .cat-bg     { background-color: #6A1A3A; }
+.cat-brasil .cat-bg      { background-color: #1A5A3A; }
+
+/* ═══════════════════════════════════
+   SECTION 4 — NO ADS
+═══════════════════════════════════ */
+#noads {
+  background: var(--white);
+  position: relative;
+  padding: 3rem 1.25rem 1.75rem;
+  margin-top: .5rem;
+}
+#noads h2 {
+  font-size: .88rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--dark);
+  line-height: 1.3;
+  margin-bottom: 1.25rem;
+}
+.noads-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin-bottom: 1.5rem;
+}
+.noads-box {
+  border: 1.5px solid var(--gray);
+  border-radius: 6px;
+  padding: .85rem .75rem;
+  text-align: center;
+}
+.noads-icon {
+  font-size: 1.6rem;
+  margin-bottom: .4rem;
+}
+.noads-box p {
+  font-size: .68rem;
+  color: var(--dark);
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* Red diagonal line separator */
+.red-divider {
+  height: 28px;
+  background: var(--red);
+  clip-path: polygon(0 30%, 100% 0, 100% 70%, 0 100%);
+  margin: 1rem 0;
+  position: relative;
+  z-index: 5;
+}
+
+/* ═══════════════════════════════════
+   SECTION 5 — PLANS
+═══════════════════════════════════ */
+#plans {
+  background: var(--white);
+  position: relative;
+  padding: 2rem 1rem 2rem;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin-bottom: 1.5rem;
+}
+.plan-card {
+  border: 1.5px solid var(--gray);
+  border-radius: 6px;
+  padding: 1rem .75rem;
+  text-align: center;
+}
+.plan-type {
+  font-size: .6rem;
+  font-weight: 700;
+  color: var(--dark);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.plan-name {
+  font-size: .85rem;
+  font-weight: 900;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: .6rem;
+  line-height: 1.1;
+}
+.plan-price {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: .75rem;
+  line-height: 1.4;
+}
+.plan-price strong {
+  font-size: 1.1rem;
+  font-weight: 900;
+  display: block;
+}
+.plan-benefits {
+  font-size: .62rem;
+  color: var(--mid);
+  text-align: left;
+  line-height: 1.55;
+  margin-top: .75rem;
+}
+.plan-benefits strong {
+  display: block;
+  margin-bottom: .3rem;
+  font-size: .65rem;
+  color: var(--dark);
+}
+.plan-benefits ul { list-style: disc; padding-left: 1rem; }
+.plan-benefits li { margin-bottom: .2rem; }
+
+.omplay-box {
+  border: 1.5px solid var(--gray);
+  border-radius: 6px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: .75rem;
+}
+.omplay-logo-placeholder {
+  background: var(--dark);
+  color: #fff;
+  font-weight: 900;
+  font-size: .9rem;
+  border-radius: 4px;
+  padding: .5rem;
+  text-align: center;
+}
+.omplay-logo-placeholder span { color: var(--red); }
+.omplay-text {
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.4;
+  text-align: left;
+}
+.omplay-text strong {
+  color: var(--red);
+  font-size: .75rem;
+  display: block;
+  margin-bottom: .2rem;
+}
+
+/* ═══════════════════════════════════
+   SECTION 6 — EXCLUSIVE PRODUCTS
+═══════════════════════════════════ */
+#exclusive {
+  background: var(--white);
+  position: relative;
+  padding: 3rem 1.25rem 1.75rem;
+  margin-top: .5rem;
+}
+#exclusive::before {
+  content: '';
+  display: block;
+  height: 30px;
+  background: var(--gray);
+  clip-path: polygon(0 0, 100% 100%, 100% 100%, 0 100%);
+  position: absolute;
+  top: 0; left: 0; right: 0;
+}
+
+#exclusive h2 {
+  font-size: .85rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--dark);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+}
+#exclusive h2 strong { color: var(--red); }
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .5rem;
+  margin-bottom: .75rem;
+}
+.product-item { text-align: center; }
+.product-thumb {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  margin-bottom: .3rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+}
+.product-item p {
+  font-size: .6rem;
+  font-weight: 600;
+  color: var(--dark);
+  line-height: 1.3;
+}
+.products-caption {
+  font-size: .72rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--dark);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  padding: 0 .5rem;
+}
+
+/* ═══════════════════════════════════
+   SECTION 7 — JOURNALISM
+═══════════════════════════════════ */
+#journalism {
+  background: var(--white);
+  position: relative;
+  padding: 3rem 1.25rem 1.75rem;
+  margin-top: .5rem;
+}
+#journalism::before {
+  content: '';
+  display: block;
+  height: 30px;
+  background: var(--gray);
+  clip-path: polygon(0 0, 100% 100%, 100% 100%, 0 100%);
+  position: absolute;
+  top: 0; left: 0; right: 0;
+}
+
+.journalism-inner {
+  display: grid;
+  grid-template-columns: 36% 1fr;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+.journalism-book {
+  aspect-ratio: 2/3;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #1a2a4e, #b31b2e);
+}
+.journalism-book span {
+  color: #fff; font-weight: 900; font-size: .7rem;
+  text-align: center; padding: .5rem; line-height: 1.3;
+}
+.journalism-text h3 {
+  font-size: .8rem;
+  font-weight: 900;
+  color: var(--dark);
+  text-transform: uppercase;
+  margin-bottom: .25rem;
+}
+.journalism-text .j-tagline {
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: .6rem;
+}
+.journalism-text p {
+  font-size: .68rem;
+  color: var(--mid);
+  line-height: 1.55;
+  margin-bottom: .5rem;
+}
+
+/* ═══════════════════════════════════
+   SECTION 8 — GUARANTEE
+═══════════════════════════════════ */
+#guarantee {
+  padding: 2rem 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+}
+.guarantee-box {
+  border-radius: 6px;
+  padding: 1rem .85rem;
+  text-align: center;
+}
+.guarantee-green {
+  background: #1DB35A;
+  color: #fff;
+}
+.guarantee-red {
+  background: var(--red);
+  color: #fff;
+}
+.guarantee-num {
+  font-size: 2.8rem;
+  font-weight: 900;
+  line-height: 1;
+  display: block;
+}
+.guarantee-box h3 {
+  font-size: .8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1.25;
+  margin-bottom: .3rem;
+}
+.guarantee-box p {
+  font-size: .65rem;
+  line-height: 1.4;
+  opacity: .9;
+}
+
+/* ═══════════════════════════════════
+   SECTION 9 — FAQ
+═══════════════════════════════════ */
+#faq {
+  background: var(--white);
+  position: relative;
+  padding: 2.5rem 1.25rem 1.75rem;
+}
+#faq::before {
+  content: '';
+  display: block;
+  height: 28px;
+  background: var(--gray);
+  clip-path: polygon(0 0, 100% 100%, 100% 100%, 0 100%);
+  position: absolute;
+  top: 0; left: 0; right: 0;
+}
+
+.faq-header {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: 1rem;
+}
+.faq-badge {
+  background: var(--red);
+  color: #fff;
+  font-weight: 900;
+  font-size: .75rem;
+  padding: .35rem .6rem;
+  border-radius: 4px;
+  letter-spacing: .04em;
+  flex-shrink: 0;
+}
+.faq-header h2 {
+  font-size: .9rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--dark);
+}
+.faq-list {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+.faq-list li {
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--gray);
+  font-size: .72rem;
+  color: var(--dark);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+}
+.faq-list li::after {
+  content: '↗';
+  color: var(--red);
+  font-size: .75rem;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════
+   SPACING HELPERS
+═══════════════════════════════════ */
+.mt-2 { margin-top: 1.5rem; }
+.gap-section { height: 1.5rem; }
+
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ══ SECTION 1 — HERO ══ -->
+  <section id="hero">
+    <div class="hero-teal"></div>
+    <div class="hero-inner">
+      <div class="hero-mag">
+        <div class="hero-mag-placeholder">
+          <span>REVISTA<br>FÓRUM</span>
+        </div>
+        <div class="hero-badge">Edição<br>nova toda<br>sexta-feira</div>
+      </div>
+      <div class="hero-text">
+        <p class="hero-title-small">Faça já sua assinatura da</p>
+        <h1 class="hero-title-big">Fórum<br>Digital</h1>
+        <p class="hero-subtitle">Seja um membro companheiro</p>
+        <ul class="hero-benefits">
+          <li>Receba a edição semanal toda sexta-feira.</li>
+          <li>Navegue pelo site da Fórum sem anúncios automáticos.</li>
+          <li>Seja <strong>Companheiro da Fórum</strong>, há 25 anos fazendo jornalismo independente na defesa dos direitos e da democracia.</li>
+        </ul>
+        <a href="https://revistaforum.com.br/assinatura/" class="btn">Assinar agora</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="gap-section"></div>
+
+  <!-- ══ SECTION 2 — FEATURES ══ -->
+  <section id="features">
+    <h2><strong>Assine agora</strong> e garanta a sua edição digital toda semana</h2>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">📱</div>
+        <p><strong>Formato ideal para ler no celular</strong></p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📖</div>
+        <p><strong>Leia onde e quando quiser</strong></p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📩</div>
+        <p><strong>Receba por e-mail ou WhatsApp</strong></p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📰</div>
+        <p><strong>Jornalismo progressista que você confia</strong></p>
+      </div>
+    </div>
+    <a href="https://revistaforum.com.br/assinatura/" class="btn">Quero assinar já</a>
+  </section>
+
+  <div class="gap-section" style="height:3rem"></div>
+
+  <!-- ══ SECTION 3 — CATEGORIES ══ -->
+  <section id="categories">
+    <h2>O que você encontra na <strong>Fórum Digital</strong></h2>
+    <div class="cat-grid">
+      <div class="cat-item cat-politica">
+        <div class="cat-bg"></div>
+        <span class="cat-label">Política</span>
+      </div>
+      <div class="cat-item cat-entrevistas">
+        <div class="cat-bg"></div>
+        <span class="cat-label">Entrevistas</span>
+      </div>
+      <div class="cat-item cat-tecnologia">
+        <div class="cat-bg"></div>
+        <span class="cat-label">Tecnologia</span>
+      </div>
+      <div class="cat-item cat-cronicas">
+        <div class="cat-bg"></div>
+        <span class="cat-label">Crônicas</span>
+      </div>
+      <div class="cat-item cat-global">
+        <div class="cat-bg"></div>
+        <span class="cat-label">Global</span>
+      </div>
+      <div class="cat-item cat-mambiente">
+        <div class="cat-bg"></div>
+        <span class="cat-label">Meio Ambiente</span>
+      </div>
+      <div class="cat-item cat-economia">
+        <div class="cat-bg"></div>
+        <span class="cat-label">Economia</span>
+      </div>
+      <div class="cat-item cat-cultura">
+        <div class="cat-bg"></div>
+        <span class="cat-label">Cultura</span>
+      </div>
+      <div class="cat-item cat-brasil">
+        <div class="cat-bg"></div>
+        <span class="cat-label">Brasil</span>
+      </div>
+    </div>
+    <a href="https://revistaforum.com.br/assinatura/" class="btn">Quero assinar já</a>
+  </section>
+
+  <div class="gap-section" style="height:3rem"></div>
+
+  <!-- ══ SECTION 4 — NO ADS ══ -->
+  <section id="noads">
+    <h2>Assine e navegue pelo site da Fórum<br><strong>sem publicidade automática</strong></h2>
+    <div class="noads-grid">
+      <div class="noads-box">
+        <div class="noads-icon">🌐</div>
+        <p>Você poderá acessar o site e ler todo o conteúdo sem anúncios programáticos</p>
+      </div>
+      <div class="noads-box">
+        <div class="noads-icon">💬</div>
+        <p>Você também poderá comentar em todas as matérias</p>
+      </div>
+    </div>
+    <a href="https://revistaforum.com.br/assinatura/" class="btn">Quero assinar já</a>
+  </section>
+
+  <!-- Red diagonal divider -->
+  <div class="red-divider"></div>
+
+  <!-- ══ SECTION 5 — PLANS ══ -->
+  <section id="plans">
+    <div class="plans-grid">
+
+      <!-- Plano Companheiro -->
+      <div class="plan-card">
+        <p class="plan-type">Membro</p>
+        <p class="plan-name">Companheiro</p>
+        <p class="plan-price">
+          <strong>12 X R$ 19,70</strong>
+        </p>
+        <a href="https://omplay.com.br/checkout/?plan=anual-basico" class="btn" style="font-size:.65rem;padding:.6rem .5rem">Vou assinar agora</a>
+        <div class="plan-benefits">
+          <strong>Benefícios</strong>
+          <ul>
+            <li>Você vai receber a sua edição toda semana.</li>
+            <li>Você vai poder ter acesso ao acervo das edições anteriores.</li>
+            <li>Você vai poder acessar as edições impressas de 2001 a 2013.</li>
+            <li>Você vai poder enviar a edição da semana para quem quiser.</li>
+            <li>Você vai poder navegar no site sem publicidades programáticas.</li>
+            <li>Você vai poder comentar nas matérias.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Plano Super Companheiro -->
+      <div class="plan-card">
+        <p class="plan-type">Membro</p>
+        <p class="plan-name">Super Companheiro</p>
+        <p class="plan-price">
+          <strong>12 X R$ 34,70</strong>
+        </p>
+        <a href="https://omplay.com.br/checkout/?plan=anual-padrao" class="btn" style="font-size:.65rem;padding:.6rem .5rem">Vou assinar agora</a>
+        <div class="plan-benefits">
+          <strong>Benefícios</strong>
+          <ul>
+            <li>Você terá todos os benefícios do Membro Companheiro.</li>
+          </ul>
+        </div>
+        <!-- OMplay dentro do Super Companheiro -->
+        <div style="border:1.5px solid #e0e0e0;border-radius:4px;padding:.75rem .5rem;margin-top:.75rem;text-align:center">
+          <div class="omplay-logo-placeholder" style="font-size:.75rem;margin-bottom:.4rem">OM<span>play</span></div>
+          <p style="font-size:.62rem;font-weight:700;color:var(--dark);line-height:1.35">
+            E ainda <strong style="color:var(--red)">GANHA 1 ANO DE ACESSO A TODO O CATÁLOGO DO OMPLAY</strong> — a plataforma de streaming progressista.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="gap-section"></div>
+
+  <!-- ══ SECTION 6 — EXCLUSIVE ══ -->
+  <section id="exclusive">
+    <h2>Exclusivo para quem é <strong>membro companheiro</strong></h2>
+    <div class="products-grid">
+      <div class="product-item">
+        <div class="product-thumb" style="background:#1a1a2e">🧢</div>
+        <p>Boné da Fórum</p>
+      </div>
+      <div class="product-item">
+        <div class="product-thumb" style="background:#2a1a0a">☕</div>
+        <p>Caneca da Fórum</p>
+      </div>
+      <div class="product-item">
+        <div class="product-thumb" style="background:#3a2a0a">☕</div>
+        <p>Café da Fórum</p>
+      </div>
+      <div class="product-item">
+        <div class="product-thumb" style="background:#1a2a3a">📚</div>
+        <p>Livros</p>
+      </div>
+    </div>
+    <p class="products-caption">Descontos nos produtos<br>da Fórum e parceiros</p>
+    <a href="https://revistaforum.com.br/assinatura/" class="btn">Quero assinar já</a>
+  </section>
+
+  <div class="gap-section" style="height:3rem"></div>
+
+  <!-- ══ SECTION 7 — JOURNALISM ══ -->
+  <section id="journalism">
+    <div class="journalism-inner">
+      <div class="journalism-book">
+        <span>O BRASIL<br>É DOS<br>BRASILEIROS</span>
+      </div>
+      <div class="journalism-text">
+        <h3>Jornalismo Fórum</h3>
+        <p class="j-tagline">Há 25 anos fazendo história</p>
+        <p>Leia artigos e reportagens dos principais nomes do jornalismo progressista da atualidade.</p>
+        <p>Entrevistas com personalidades para entender as transformações do mundo.</p>
+      </div>
+    </div>
+    <a href="https://revistaforum.com.br/assinatura/" class="btn">Quero assinar já</a>
+  </section>
+
+  <div class="gap-section"></div>
+
+  <!-- ══ SECTION 8 — GUARANTEE ══ -->
+  <section id="guarantee">
+    <div class="guarantee-box guarantee-green">
+      <span class="guarantee-num">7</span>
+      <p>dias de garantia ou seu dinheiro de volta</p>
+    </div>
+    <div class="guarantee-box guarantee-red">
+      <h3>Garantia<br>incondicional</h3>
+      <p>Plano anual</p>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 9 — FAQ ══ -->
+  <section id="faq">
+    <div class="faq-header">
+      <span class="faq-badge">FAQ</span>
+      <h2>Dúvidas frequentes</h2>
+    </div>
+    <ul class="faq-list">
+      <li>O que é a Revista Fórum Digital?</li>
+      <li>Como faço para receber minha edição?</li>
+      <li>Quantas edições vou receber?</li>
+      <li>Como funciona a assinatura?</li>
+      <li>Qual é a diferença do portal e da edição semanal?</li>
+      <li>Ganho mais algum benefício?</li>
+    </ul>
+    <a href="https://revistaforum.com.br/assinatura/" class="btn btn-full">Quero assinar já</a>
+  </section>
+
+  <div class="gap-section" style="height:2rem"></div>
+
+</div><!-- /page -->
+
+</body>
+</html>

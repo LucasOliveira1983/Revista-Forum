@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extrator de Imagens — Fórum Digital</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,Arial,sans-serif;background:#f0f0f2;color:#222;min-height:100vh}
+h1{font-size:1.1rem;font-weight:700;color:#B31B2E;padding:1rem 1.5rem;background:#fff;border-bottom:1px solid #ddd}
+h1 span{font-weight:400;color:#555;font-size:.85rem;margin-left:.75rem}
+
+#drop-zone{
+  border:2px dashed #bbb;border-radius:10px;padding:2.5rem;text-align:center;
+  cursor:pointer;background:#fff;margin:1.25rem;transition:border-color .2s;
+}
+#drop-zone.drag-over{border-color:#B31B2E;background:#fff5f5}
+#drop-zone p{color:#666;font-size:.9rem}
+#drop-zone strong{display:block;font-size:1.05rem;color:#333;margin-bottom:.35rem}
+#file-input{display:none}
+.btn-load{
+  display:inline-block;margin-top:.85rem;background:#B31B2E;color:#fff;
+  border:none;padding:.6rem 1.75rem;border-radius:6px;cursor:pointer;font-weight:700;font-size:.85rem
+}
+
+#preview-area{display:none;margin:0 1.25rem 1.25rem}
+#preview-area h2{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#888;margin:1rem 0 .65rem}
+
+#canvas-wrap{position:relative;width:100%;overflow:hidden;background:#fff;border:1px solid #ddd;border-radius:8px;margin-bottom:1.25rem}
+#main-canvas{display:block;width:100%;height:auto}
+
+.crops-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:.75rem;
+  margin-bottom:1.5rem;
+}
+.crop-card{
+  background:#fff;border:1px solid #ddd;border-radius:8px;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.crop-card canvas{width:100%;height:auto;display:block;background:#f5f5f5}
+.crop-info{padding:.5rem .6rem;border-top:1px solid #eee}
+.crop-info p{font-size:.72rem;font-weight:600;color:#333;margin-bottom:.4rem;line-height:1.3}
+.btn-dl{
+  display:block;width:100%;background:#B31B2E;color:#fff;border:none;
+  padding:.45rem .5rem;border-radius:5px;cursor:pointer;font-size:.72rem;font-weight:700;
+  text-align:center;transition:background .2s
+}
+.btn-dl:hover{background:#971525}
+.btn-dl-all{
+  display:block;width:calc(100% - 2.5rem);margin:0 1.25rem 1.5rem;
+  background:#222;color:#fff;border:none;padding:.75rem;border-radius:8px;
+  cursor:pointer;font-size:.9rem;font-weight:700;text-align:center;transition:background .2s
+}
+.btn-dl-all:hover{background:#000}
+
+.tag{
+  display:inline-block;font-size:.58rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;padding:.15rem .45rem;border-radius:3px;margin-bottom:.35rem;
+}
+.tag-hero{background:#FFE0E0;color:#B31B2E}
+.tag-cat{background:#E0F0FF;color:#1565C0}
+.tag-prod{background:#E8F5E9;color:#2E7D32}
+.tag-ui{background:#FFF3E0;color:#E65100}
+.tag-other{background:#F3E5F5;color:#6A1B9A}
+</style>
+</head>
+<body>
+
+<h1>Extrator de Imagens <span>— Fórum Digital</span></h1>
+
+<div id="drop-zone" onclick="document.getElementById('file-input').click()">
+  <strong>📂 Carregar imagem do design</strong>
+  <p>Arraste a imagem aqui ou clique para selecionar</p>
+  <p style="font-size:.75rem;color:#aaa;margin-top:.3rem">Suporta PNG, JPG, WebP</p>
+  <button class="btn-load" onclick="event.stopPropagation();document.getElementById('file-input').click()">Escolher arquivo</button>
+</div>
+<input type="file" id="file-input" accept="image/*">
+
+<div id="preview-area">
+  <h2>Visualização — regiões identificadas</h2>
+  <div id="canvas-wrap">
+    <canvas id="main-canvas"></canvas>
+  </div>
+
+  <button class="btn-dl-all" id="btn-dl-all">⬇ Baixar todas as imagens (.zip via download individual)</button>
+
+  <h2>Imagens extraídas</h2>
+  <div class="crops-grid" id="crops-grid"></div>
+</div>
+
+<canvas id="offscreen" style="display:none"></canvas>
+
+<script>
+/* ─── DEFINIÇÃO DAS REGIÕES ───────────────────────────────
+   Coordenadas relativas: x,y,w,h em proporção 0–1
+   Baseadas na imagem de design 4000×20250px
+─────────────────────────────────────────────────────────── */
+const REGIONS = [
+  // ── HERO ──
+  { name: 'Capa_Revista_Fórum_Hero',      tag:'hero',  x:.005, y:.025,  w:.40,  h:.115 },
+  { name: 'Badge_Edição_Sexta-feira',     tag:'hero',  x:.78,  y:.013,  w:.21,  h:.036 },
+
+  // ── CATEGORIAS ──
+  { name: 'Categoria_Política',           tag:'cat',   x:.005, y:.295,  w:.325, h:.062 },
+  { name: 'Categoria_Entrevistas',        tag:'cat',   x:.337, y:.295,  w:.325, h:.062 },
+  { name: 'Categoria_Tecnologia',         tag:'cat',   x:.668, y:.295,  w:.328, h:.062 },
+  { name: 'Categoria_Brasil',             tag:'cat',   x:.005, y:.358,  w:.325, h:.062 },
+  { name: 'Categoria_Meio_Ambiente',      tag:'cat',   x:.337, y:.358,  w:.325, h:.062 },
+  { name: 'Categoria_Direitos',           tag:'cat',   x:.668, y:.358,  w:.328, h:.062 },
+  { name: 'Categoria_Global',             tag:'cat',   x:.005, y:.421,  w:.325, h:.062 },
+  { name: 'Categoria_Economia',           tag:'cat',   x:.337, y:.421,  w:.325, h:.062 },
+  { name: 'Categoria_Cultura',            tag:'cat',   x:.668, y:.421,  w:.328, h:.062 },
+
+  // ── PLANOS ──
+  { name: 'OMplay_Logo',                  tag:'ui',    x:.25,  y:.672,  w:.50,  h:.038 },
+
+  // ── PRODUTOS ──
+  { name: 'Produto_O_Brasil_Brasileiros', tag:'prod',  x:.005, y:.757,  w:.245, h:.073 },
+  { name: 'Produto_Revista_Fórum',        tag:'prod',  x:.255, y:.757,  w:.245, h:.073 },
+  { name: 'Produto_Café_Especial',        tag:'prod',  x:.507, y:.757,  w:.245, h:.073 },
+  { name: 'Produto_Como_Derrotar',        tag:'prod',  x:.755, y:.757,  w:.245, h:.073 },
+
+  // ── JORNALISMO ──
+  { name: 'Livro_Jornalismo_Fórum',       tag:'other', x:.005, y:.840,  w:.38,  h:.062 },
+
+  // ── GARANTIA ──
+  { name: 'Box_7_Dias_Garantia',          tag:'ui',    x:.005, y:.905,  w:.49,  h:.048 },
+  { name: 'Box_Garantia_Incondicional',   tag:'ui',    x:.502, y:.905,  w:.493, h:.048 },
+];
+
+const TAG_COLORS = {
+  hero:  '#ef5350',
+  cat:   '#1e88e5',
+  prod:  '#43a047',
+  ui:    '#fb8c00',
+  other: '#8e24aa',
+};
+
+let loadedImage = null;
+
+/* ─── DRAG & DROP ─────────────────────── */
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) loadImage(file);
+});
+document.getElementById('file-input').addEventListener('change', e => {
+  if (e.target.files[0]) loadImage(e.target.files[0]);
+});
+
+/* ─── LOAD IMAGE ──────────────────────── */
+function loadImage(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      loadedImage = img;
+      renderPreview(img);
+      renderCrops(img);
+      document.getElementById('drop-zone').style.display = 'none';
+      document.getElementById('preview-area').style.display = 'block';
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ─── RENDER PREVIEW WITH OVERLAYS ───── */
+function renderPreview(img) {
+  const canvas = document.getElementById('main-canvas');
+  const maxW = canvas.parentElement.clientWidth || 800;
+  const scale = maxW / img.width;
+  canvas.width = img.width;
+  canvas.height = img.height;
+  canvas.style.maxHeight = '600px';
+  canvas.style.cursor = 'default';
+
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+
+  REGIONS.forEach((r, i) => {
+    const x = r.x * img.width;
+    const y = r.y * img.height;
+    const w = r.w * img.width;
+    const h = r.h * img.height;
+    const col = TAG_COLORS[r.tag] || '#666';
+
+    ctx.strokeStyle = col;
+    ctx.lineWidth = Math.max(6, img.width * 0.004);
+    ctx.strokeRect(x, y, w, h);
+
+    ctx.fillStyle = col + 'cc';
+    ctx.fillRect(x, y, w, Math.min(h * 0.22, img.height * 0.018));
+
+    ctx.fillStyle = '#fff';
+    ctx.font = `bold ${Math.max(20, img.width * 0.014)}px system-ui,Arial,sans-serif`;
+    ctx.fillText(`${i+1}. ${r.name.replace(/_/g,' ')}`, x + img.width*0.005, y + img.height*0.013);
+  });
+}
+
+/* ─── RENDER CROP CARDS ───────────────── */
+function renderCrops(img) {
+  const grid = document.getElementById('crops-grid');
+  grid.innerHTML = '';
+
+  REGIONS.forEach((r, i) => {
+    const sx = Math.round(r.x * img.width);
+    const sy = Math.round(r.y * img.height);
+    const sw = Math.round(r.w * img.width);
+    const sh = Math.round(r.h * img.height);
+
+    // Create crop canvas
+    const c = document.createElement('canvas');
+    c.width = sw;
+    c.height = sh;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+
+    // Card
+    const card = document.createElement('div');
+    card.className = 'crop-card';
+
+    const col = TAG_COLORS[r.tag] || '#666';
+    const tagEl = document.createElement('div');
+    tagEl.innerHTML = `<span class="tag tag-${r.tag}" style="background:${col}22;color:${col}">${r.tag.toUpperCase()}</span>`;
+    tagEl.style.padding = '.4rem .6rem 0';
+
+    card.appendChild(tagEl);
+    card.appendChild(c);
+
+    const info = document.createElement('div');
+    info.className = 'crop-info';
+    info.innerHTML = `<p>${i+1}. ${r.name.replace(/_/g,' ')}</p>`;
+
+    const btn = document.createElement('button');
+    btn.className = 'btn-dl';
+    btn.textContent = '⬇ Baixar PNG';
+    btn.addEventListener('click', () => downloadCanvas(c, r.name + '.png'));
+
+    info.appendChild(btn);
+    card.appendChild(info);
+    grid.appendChild(card);
+  });
+}
+
+/* ─── DOWNLOAD SINGLE ─────────────────── */
+function downloadCanvas(canvas, filename) {
+  canvas.toBlob(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }, 'image/png');
+}
+
+/* ─── DOWNLOAD ALL (sequencial) ─────────  */
+document.getElementById('btn-dl-all').addEventListener('click', async () => {
+  if (!loadedImage) return;
+  const cards = document.querySelectorAll('.crop-card canvas');
+  const btn = document.getElementById('btn-dl-all');
+  btn.textContent = 'Baixando...';
+
+  for (let i = 0; i < cards.length; i++) {
+    const name = REGIONS[i].name + '.png';
+    await new Promise(resolve => {
+      cards[i].toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.click();
+        setTimeout(() => { URL.revokeObjectURL(url); resolve(); }, 350);
+      }, 'image/png');
+    });
+  }
+
+  btn.textContent = '✅ Download concluído!';
+  setTimeout(() => { btn.textContent = '⬇ Baixar todas as imagens'; }, 2500);
+});
+</script>
+</body>
+</html>
