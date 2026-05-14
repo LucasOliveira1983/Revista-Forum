@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fórum Digital — Assine Agora</title>
+</head>
+<body style="margin:0;padding:0;">
+
+<!-- STYLE dentro do body: Mautic preserva, ao contrário do <head> -->
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body { margin: 0; padding: 0; }
-
-.bg-wrap {
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.fg-bg {
   background-color: #e5e5e7;
   background-image: url('https://lucasoliveira1983.github.io/omplay-pages/background.png');
   background-size: 100% auto;
@@ -19,130 +20,65 @@ body { margin: 0; padding: 0; }
   display: flex;
   justify-content: center;
 }
-
-.page {
-  width: 100%;
-  max-width: 480px;
-}
-
-/* Tablet */
-@media (min-width: 600px) {
-  .page { max-width: 580px; }
-}
-
-/* Desktop */
-@media (min-width: 1024px) {
-  .bg-wrap {
-    background-size: 50% auto;
-    background-position: center top;
-  }
-  .page { max-width: 860px; }
-}
-
-/* Wide desktop */
-@media (min-width: 1440px) {
-  .bg-wrap { background-size: 40% auto; }
-  .page { max-width: 960px; }
-}
-
-.design-wrap {
-  position: relative;
-  width: 100%;
-  display: block;
-}
-
-.design-wrap img {
-  display: block;
-  width: 100%;
-  height: auto;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-/* ── HOTSPOTS ──────────────────────────────────────────────
-   % relativas à altura total da imagem do design.
-   Para calibrar, descomente: background: rgba(255,0,0,.35)
-──────────────────────────────────────────────────────────── */
-.hs {
-  position: absolute;
-  display: block;
-  cursor: pointer;
-  /* background: rgba(255, 0, 0, .35); */
-}
+.fg-page { width: 100%; max-width: 480px; }
+.fg-wrap { position: relative; width: 100%; display: block; }
+.fg-wrap img { display: block; width: 100%; height: auto; }
+.hs { position: absolute; display: block; cursor: pointer; }
+@media (min-width: 600px)  { .fg-page { max-width: 580px; } }
+@media (min-width: 1024px) { .fg-bg { background-size: 50% auto; } .fg-page { max-width: 860px; } }
+@media (min-width: 1440px) { .fg-bg { background-size: 40% auto; } .fg-page { max-width: 960px; } }
 </style>
-</head>
-<body>
-<div class="bg-wrap">
-<div class="page">
-  <div class="design-wrap">
 
-    <!--
-      UPLOAD necessário: envie a imagem do design para o repositório
-      https://github.com/LucasOliveira1983/omplay-pages
-      com o nome: forum-design.jpg
-      URL final: https://lucasoliveira1983.github.io/omplay-pages/forum-design.jpg
-    -->
-    <img
-      src="https://lucasoliveira1983.github.io/omplay-pages/elementos2.png"
-      alt="Fórum Digital — Assine e seja membro Companheiro"
-    >
+<div class="fg-bg"
+     style="background-color:#e5e5e7;background-image:url('https://lucasoliveira1983.github.io/omplay-pages/background.png');background-size:100% auto;background-repeat:repeat-y;background-position:top center;min-height:100vh;display:flex;justify-content:center;">
+  <div class="fg-page" style="width:100%;max-width:480px;">
+    <div class="fg-wrap" style="position:relative;width:100%;display:block;">
 
-    <!-- 1 · ASSINAR AGORA — Hero -->
-    <a class="hs"
-       href="https://revistaforum.com.br/assinatura/"
-       target="_blank"
-       style="top:10.2%; height:2.0%; left:27%; width:46%"></a>
+      <img
+        src="https://lucasoliveira1983.github.io/omplay-pages/elementos2.png"
+        alt="Fórum Digital — Assine e seja membro Companheiro"
+        style="display:block;width:100%;height:auto;"
+      >
 
-    <!-- 2 · QUERO ASSINAR JÁ — Benefícios da edição -->
-    <a class="hs"
-       href="https://revistaforum.com.br/assinatura/"
-       target="_blank"
-       style="top:21.6%; height:2.0%; left:27%; width:46%"></a>
+      <!-- 1 · ASSINAR AGORA — Hero -->
+      <a class="hs" href="https://revistaforum.com.br/assinatura/" target="_blank"
+         style="position:absolute;display:block;cursor:pointer;top:10.2%;height:2.0%;left:27%;width:46%"></a>
 
-    <!-- 3 · QUERO ASSINAR JÁ — Categorias -->
-    <a class="hs"
-       href="https://revistaforum.com.br/assinatura/"
-       target="_blank"
-       style="top:39.7%; height:2.0%; left:27%; width:46%"></a>
+      <!-- 2 · QUERO ASSINAR JÁ — Benefícios -->
+      <a class="hs" href="https://revistaforum.com.br/assinatura/" target="_blank"
+         style="position:absolute;display:block;cursor:pointer;top:21.6%;height:2.0%;left:27%;width:46%"></a>
 
-    <!-- 4 · QUERO ASSINAR JÁ — Sem publicidade -->
-    <a class="hs"
-       href="https://revistaforum.com.br/assinatura/"
-       target="_blank"
-       style="top:48.9%; height:2.0%; left:27%; width:46%"></a>
+      <!-- 3 · QUERO ASSINAR JÁ — Categorias -->
+      <a class="hs" href="https://revistaforum.com.br/assinatura/" target="_blank"
+         style="position:absolute;display:block;cursor:pointer;top:39.7%;height:2.0%;left:27%;width:46%"></a>
 
-    <!-- 5 · VOU ASSINAR AGORA — Membro Companheiro (esquerda) -->
-    <a class="hs"
-       href="https://omplay.com.br/checkout/?plan=anual-basico"
-       target="_blank"
-       style="top:59.3%; height:2.0%; left:4%; width:43%"></a>
+      <!-- 4 · QUERO ASSINAR JÁ — Sem publicidade -->
+      <a class="hs" href="https://revistaforum.com.br/assinatura/" target="_blank"
+         style="position:absolute;display:block;cursor:pointer;top:48.9%;height:2.0%;left:27%;width:46%"></a>
 
-    <!-- 6 · VOU ASSINAR AGORA — Membro Super Companheiro (direita) -->
-    <a class="hs"
-       href="https://omplay.com.br/checkout/?plan=anual-padrao"
-       target="_blank"
-       style="top:59.3%; height:2.0%; left:53%; width:43%"></a>
+      <!-- 5 · VOU ASSINAR AGORA — Companheiro (esquerda) -->
+      <a class="hs" href="https://omplay.com.br/checkout/?plan=anual-basico" target="_blank"
+         style="position:absolute;display:block;cursor:pointer;top:59.3%;height:2.0%;left:4%;width:43%"></a>
 
-    <!-- 7 · QUERO ASSINAR JÁ — Produtos exclusivos -->
-    <a class="hs"
-       href="https://revistaforum.com.br/assinatura/"
-       target="_blank"
-       style="top:75.8%; height:2.0%; left:27%; width:46%"></a>
+      <!-- 6 · VOU ASSINAR AGORA — Super Companheiro (direita) -->
+      <a class="hs" href="https://omplay.com.br/checkout/?plan=anual-padrao" target="_blank"
+         style="position:absolute;display:block;cursor:pointer;top:59.3%;height:2.0%;left:53%;width:43%"></a>
 
-    <!-- 8 · QUERO ASSINAR JÁ — Jornalismo Fórum -->
-    <a class="hs"
-       href="https://revistaforum.com.br/assinatura/"
-       target="_blank"
-       style="top:87.0%; height:2.0%; left:27%; width:46%"></a>
+      <!-- 7 · QUERO ASSINAR JÁ — Produtos exclusivos -->
+      <a class="hs" href="https://revistaforum.com.br/assinatura/" target="_blank"
+         style="position:absolute;display:block;cursor:pointer;top:75.8%;height:2.0%;left:27%;width:46%"></a>
 
-    <!-- 9 · QUERO ASSINAR JÁ — FAQ (final) -->
-    <a class="hs"
-       href="https://revistaforum.com.br/assinatura/"
-       target="_blank"
-       style="top:98.0%; height:2.0%; left:27%; width:46%"></a>
+      <!-- 8 · QUERO ASSINAR JÁ — Jornalismo Fórum -->
+      <a class="hs" href="https://revistaforum.com.br/assinatura/" target="_blank"
+         style="position:absolute;display:block;cursor:pointer;top:87.0%;height:2.0%;left:27%;width:46%"></a>
 
+      <!-- 9 · QUERO ASSINAR JÁ — FAQ final -->
+      <a class="hs" href="https://revistaforum.com.br/assinatura/" target="_blank"
+         style="position:absolute;display:block;cursor:pointer;top:98.0%;height:2.0%;left:27%;width:46%"></a>
+
+    </div>
   </div>
 </div>
-</div>
+
 </body>
 </html>
