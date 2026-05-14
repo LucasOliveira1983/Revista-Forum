@@ -7,7 +7,9 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
+body { margin: 0; padding: 0; }
+
+.bg-wrap {
   background-color: #e5e5e7;
   background-image: url('https://lucasoliveira1983.github.io/omplay-pages/background.png');
   background-size: 100% auto;
@@ -30,7 +32,7 @@ body {
 
 /* Desktop */
 @media (min-width: 1024px) {
-  body {
+  .bg-wrap {
     background-size: 50% auto;
     background-position: center top;
   }
@@ -39,7 +41,7 @@ body {
 
 /* Wide desktop */
 @media (min-width: 1440px) {
-  body { background-size: 40% auto; }
+  .bg-wrap { background-size: 40% auto; }
   .page { max-width: 960px; }
 }
 
@@ -70,6 +72,7 @@ body {
 </style>
 </head>
 <body>
+<div class="bg-wrap">
 <div class="page">
   <div class="design-wrap">
 
@@ -139,6 +142,7 @@ body {
        style="top:98.0%; height:2.0%; left:27%; width:46%"></a>
 
   </div>
+</div>
 </div>
 </body>
 </html>
