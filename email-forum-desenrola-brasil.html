@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novo Desenrola Brasil — Revista Fórum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forum-red: #c41a1a;
+      --forum-red-dark: #a01515;
+      --forum-red-light: #fef2f2;
+      --forum-red-border: #fecaca;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #888;
+      --bg-white: #ffffff;
+      --bg-light: #f7f7f7;
+      --bg-subtle: #fafafa;
+      --border: #e8e8e8;
+      --border-light: #f0f0f0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrapper {
+      max-width: 640px;
+      margin: 2rem auto;
+      background: var(--bg-white);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 30px rgba(0,0,0,0.04);
+    }
+
+    /* ── Top accent ── */
+    .top-accent { height: 5px; background: var(--forum-red); }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .header img { height: 28px; width: auto; }
+    .header-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--forum-red);
+      background: var(--forum-red-light);
+      padding: 5px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--forum-red); }
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ── Stats ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat {
+      padding: 1.4rem 1rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-value {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--forum-red);
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 4px;
+    }
+
+    /* ── Body ── */
+    .body { padding: 2.5rem 2rem; }
+    .lead-text {
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--text-secondary);
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    /* ── Section title ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--forum-red);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Quem pode participar ── */
+    .participants {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 2.5rem;
+    }
+    .participant {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      background: var(--bg-subtle);
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .participant:hover { background: var(--forum-red-light); }
+    .participant-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--forum-red-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+    .participant-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    /* ── Benefícios ── */
+    .benefits { margin-bottom: 2.5rem; }
+    .benefit-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .benefit-row:last-child { border-bottom: none; }
+    .benefit-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--forum-red);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .benefit-label {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 15px;
+      min-width: 150px;
+    }
+    .benefit-desc {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    /* ── Alert ── */
+    .alert {
+      background: var(--forum-red-light);
+      border: 1px solid var(--forum-red-border);
+      padding: 1.3rem 1.5rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .alert-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .alert h4 {
+      color: var(--forum-red);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .alert p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Dicas ── */
+    .tips {
+      background: var(--bg-subtle);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+    }
+    .tip {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .tip:last-child { margin-bottom: 0; }
+    .tip-num {
+      width: 24px;
+      height: 24px;
+      background: var(--forum-red);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .tip-text {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .tip-text strong { color: var(--text-primary); }
+
+    /* ── CTA ── */
+    .cta {
+      text-align: center;
+      padding: 2rem 0 0.5rem;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--forum-red);
+      color: #fff;
+      padding: 15px 48px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      transition: background 0.3s;
+    }
+    .cta-btn:hover { background: var(--forum-red-dark); }
+    .cta-sub {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--bg-subtle);
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .footer img { height: 20px; width: auto; opacity: 0.35; margin-bottom: 10px; }
+    .footer p {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    .footer a { color: var(--text-muted); text-decoration: underline; }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .wrapper { margin: 0; border-radius: 0; }
+      .header, .body { padding-left: 1.2rem; padding-right: 1.2rem; }
+      .hero { padding: 2rem 1.2rem; }
+      .hero h1 { font-size: 24px; }
+      .participants { grid-template-columns: 1fr; }
+      .benefit-row { flex-wrap: wrap; gap: 6px; }
+      .benefit-label { min-width: unset; }
+      .stat-value { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="top-accent"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <img src="https://revistaforum.com.br/wp-content/themes/revistaforum/assets/img/PNG/forum-logo.png" alt="Revista Fórum">
+    <span class="header-badge">Conteúdo de marca</span>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-tag">Programa do Governo Federal</div>
+    <h1>Novo <span>Desenrola</span> Brasil</h1>
+    <p>Oportunidade real de voltar a respirar com saúde financeira. Descontos, juros reduzidos e melhores condições de pagamento.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value">90%</div>
+      <div class="stat-label">Desconto máximo</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">48x</div>
+      <div class="stat-label">Parcelamento</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">1,99%</div>
+      <div class="stat-label">Juros ao mês</div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <p class="lead-text">
+      Criado pela Medida Provisória 1.355/2026, o <strong>Novo Desenrola Brasil</strong> chega como um divisor de águas, oferecendo mais oportunidade e menos aperto para quem deseja regularizar sua situação e retomar o controle financeiro.
+    </p>
+
+    <!-- Quem pode participar -->
+    <div class="section-label">Quem pode participar</div>
+    <div class="participants">
+      <div class="participant">
+        <div class="participant-icon">🏠</div>
+        <div class="participant-text">Famílias com renda até R$ 8.105</div>
+      </div>
+      <div class="participant">
+        <div class="participant-icon">🎓</div>
+        <div class="participant-text">Estudantes FIES (até 99% de desconto)</div>
+      </div>
+      <div class="participant">
+        <div class="participant-icon">🏢</div>
+        <div class="participant-text">Micro e pequenas empresas e MEIs</div>
+      </div>
+      <div class="participant">
+        <div class="participant-icon">🌱</div>
+        <div class="participant-text">Agricultores familiares</div>
+      </div>
+      <div class="participant">
+        <div class="participant-icon">❤️</div>
+        <div class="participant-text">Aposentados e pensionistas</div>
+      </div>
+      <div class="participant">
+        <div class="participant-icon">💼</div>
+        <div class="participant-text">Servidores públicos federais</div>
+      </div>
+    </div>
+
+    <!-- Benefícios -->
+    <div class="section-label">Principais benefícios</div>
+    <div class="benefits">
+      <div class="benefit-row">
+        <div class="benefit-dot"></div>
+        <div class="benefit-label">Descontos gigantes</div>
+        <div class="benefit-desc">Reduções de 30% a 90% do valor total da dívida</div>
+      </div>
+      <div class="benefit-row">
+        <div class="benefit-dot"></div>
+        <div class="benefit-label">Juros baixos</div>
+        <div class="benefit-desc">Taxa máxima de 1,99% ao mês no parcelamento</div>
+      </div>
+      <div class="benefit-row">
+        <div class="benefit-dot"></div>
+        <div class="benefit-label">Prazos estendidos</div>
+        <div class="benefit-desc">Parcelamento em até 48 meses (4 anos)</div>
+      </div>
+      <div class="benefit-row">
+        <div class="benefit-dot"></div>
+        <div class="benefit-label">FGTS liberado</div>
+        <div class="benefit-desc">Use parte do saldo do FGTS para quitar dívidas</div>
+      </div>
+      <div class="benefit-row">
+        <div class="benefit-dot"></div>
+        <div class="benefit-label">Nome limpo na hora</div>
+        <div class="benefit-desc">Dívidas até R$ 100 desnegativadas imediatamente</div>
+      </div>
+    </div>
+
+    <!-- Alert -->
+    <div class="alert">
+      <div class="alert-icon">⏰</div>
+      <div>
+        <h4>Janela de oportunidade limitada</h4>
+        <p>O prazo inicial é de 90 dias a partir de maio de 2026. Procure seu banco, conheça as condições e aproveite essa oportunidade de recomeçar financeiramente.</p>
+      </div>
+    </div>
+
+    <!-- Dicas -->
+    <div class="section-label">Dicas de educação financeira</div>
+    <div class="tips">
+      <div class="tip">
+        <div class="tip-num">1</div>
+        <div class="tip-text"><strong>Analise o orçamento</strong> — Verifique se a parcela cabe no salário após descontar aluguel, alimentação e luz.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-num">2</div>
+        <div class="tip-text"><strong>Cuidado com o cartão</strong> — Use apenas para compras planejadas. Lembre-se que ele é um empréstimo de curto prazo.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-num">3</div>
+        <div class="tip-text"><strong>Reserva de emergência</strong> — Guarde uma quantia por mês para evitar novos empréstimos diante de imprevistos.</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <a href="https://revistaforum.com.br/conteudo-de-marca/novo-desenrola-brasil-oportunidade-saude-financeira/" class="cta-btn">Saiba como renegociar</a>
+      <p class="cta-sub">Procure seu banco e conheça as condições disponíveis</p>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <img src="https://revistaforum.com.br/wp-content/themes/revistaforum/assets/img/PNG/forum-logo.png" alt="Fórum">
+    <p>Revista Fórum | Conteúdo de Marca<br>© 2026 Revista Fórum. Todos os direitos reservados.<br><a href="#">Descadastrar-se</a></p>
+  </div>
+
+</div>
+
+</body>
+</html>
