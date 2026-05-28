@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fórum Tarifa Zero</title>
+  <meta name="description" content="Fórum Tarifa Zero - Desafios, expectativas e perspectivas. Evento presencial com transmissão ao vivo em 17 de junho de 2026, no Teatro dos Bancários, em Brasília/DF.">
+  <link rel="canonical" href="https://revistaforum.com.br/tarifazero">
+  <meta property="og:title" content="Fórum Tarifa Zero">
+  <meta property="og:description" content="Inscreva-se gratuitamente no Fórum Tarifa Zero.">
+  <meta property="og:url" content="https://revistaforum.com.br/tarifazero">
+  <meta property="og:image" content="https://raw.githubusercontent.com/LucasOliveira1983/omplay-pages/main/ftzo-hero.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', system-ui, Arial, sans-serif;
+      background: linear-gradient(180deg, #17204A 0%, #111733 56%, #0F1530 100%);
+    }
+    .section-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .cta-section {
+      padding: 52px 20px 60px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(13,19,48,0.18), rgba(13,19,48,0.68));
+    }
+    .cta-label {
+      display: block;
+      margin-bottom: 28px;
+      color: rgba(247,248,252,0.75);
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+    .cta-btn {
+      display: inline-block;
+      padding: 22px 56px;
+      background: radial-gradient(circle at 35% 25%, #53cf58 0%, #43b449 58%, #2f8434 100%);
+      color: #fff;
+      font-family: inherit;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      border-radius: 999px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.34);
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .cta-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .cta-btn:active { transform: translateY(0); }
+    .signup-functional {
+      position: relative;
+      width: 100%;
+      background: #0F1530;
+    }
+    .signup-art {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .signup-functional form {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      margin: 0;
+    }
+    .signup-functional .field,
+    .signup-functional .submit-hit {
+      position: absolute;
+      display: block;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #0F1530;
+      font-family: inherit;
+      font-weight: 700;
+      outline: none;
+    }
+    .signup-functional .field {
+      left: 20.55%;
+      width: 58.88%;
+      height: 4.9%;
+      padding: 0 2.2%;
+      font-size: clamp(0.72rem, 1.25vw, 1.38rem);
+    }
+    .signup-functional .field:focus {
+      box-shadow: 0 0 0 4px rgba(83,207,88,0.45);
+    }
+    .signup-functional .submit-hit {
+      left: 20.55%;
+      top: 79.54%;
+      width: 58.88%;
+      height: 6.15%;
+      cursor: pointer;
+      color: transparent;
+    }
+    .signup-functional .submit-hit:focus {
+      box-shadow: 0 0 0 5px rgba(255,255,255,0.55);
+    }
+    .signup-functional .field-name { top: 38.62%; }
+    .signup-functional .field-email { top: 47.26%; }
+    .signup-functional .field-phone { top: 55.89%; }
+    .signup-functional .field-city { top: 64.53%; }
+    .signup-functional .field-company { top: 73.16%; }
+    .signup-functional .mauticform-field-hidden { display: none !important; }
+    .program-section {
+      padding: 64px 20px 72px;
+      background: linear-gradient(180deg, rgba(10,15,44,0.22), rgba(10,15,44,0.58));
+    }
+    .program-heading {
+      margin: 0 0 36px;
+      text-align: center;
+      color: #F7F8FC;
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.05;
+    }
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 48px;
+      max-width: 760px;
+      margin: 0 auto 48px;
+      padding: 24px 28px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .schedule-item {
+      color: #F7F8FC;
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      line-height: 1.75;
+    }
+    .schedule-item strong { font-weight: 700; }
+    .panels-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .panel-card {
+      display: flex;
+      flex-direction: column;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 48px rgba(2,8,28,0.36);
+    }
+    .panel-header {
+      background: #334C9F;
+      color: #fff;
+      font-size: clamp(1.2rem, 2.5vw, 1.95rem);
+      font-weight: 800;
+      padding: 22px 18px;
+      text-align: center;
+      line-height: 1;
+    }
+    .panel-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .footer {
+      background: #0F1530;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 36px 20px 52px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .footer-realizacao {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .footer-label {
+      color: rgba(247,248,252,0.45);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .footer-logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
+    }
+    .footer-logo { height: 30px; width: auto; display: block; }
+    .footer-apoio {
+      margin: 0;
+      color: rgba(247,248,252,0.45);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.6;
+    }
+    @media (max-width: 900px) {
+      .panels-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .cta-section { padding: 40px 16px 44px; }
+      .cta-btn { padding: 18px 36px; width: 100%; max-width: 320px; }
+      .program-section { padding: 44px 16px 52px; }
+      .schedule-grid { grid-template-columns: 1fr; gap: 4px; padding: 18px; margin-bottom: 32px; }
+      .panels-grid { grid-template-columns: 1fr; gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <img
+    src="https://raw.githubusercontent.com/LucasOliveira1983/omplay-pages/main/ftzo-hero.png"
+    alt="Fórum Tarifa Zero — 17 de junho de 2026, Teatro dos Bancários, Brasília/DF"
+    class="section-img"
+  >
+
+  <section class="cta-section">
+    <span class="cta-label">Evento presencial com transmissão ao vivo · 17/06/2026 · Teatro dos Bancários, Brasília/DF</span>
+    <a href="#inscricao" class="cta-btn">Inscrever-se Agora</a>
+  </section>
+
+  <section id="inscricao" class="signup-functional" aria-label="Formulário de inscrição">
+    <img
+      src="https://raw.githubusercontent.com/LucasOliveira1983/omplay-pages/main/ftzo-form.png"
+      alt="Inscreva-se gratuitamente no Fórum Tarifa Zero"
+      class="signup-art"
+    >
+    <!-- Formulário Mautic: envia para o Form ID 9 e mantém a inscrição/segmentação no Mautic. -->
+    <form autocomplete="false" role="form" method="post" action="https://mautic.revistaforum.com.br/form/submit?formId=9" id="mauticform_forumtarifazero" data-mautic-form="forumtarifazero" enctype="multipart/form-data">
+      <input class="field field-name" id="mauticform_input_forumtarifazero_nome" name="mauticform[nome]" value="" type="text" aria-label="Nome" required>
+      <input class="field field-email" id="mauticform_input_forumtarifazero_email" name="mauticform[email]" value="" type="email" aria-label="E-mail" required>
+      <input class="field field-phone" id="mauticform_input_forumtarifazero_digite_seu_numero_de_celu" name="mauticform[digite_seu_numero_de_celu]" value="" type="tel" aria-label="Telefone celular" required>
+      <input class="field field-city" id="mauticform_input_forumtarifazero_cidadeestado" name="mauticform[cidadeestado]" value="" type="text" aria-label="Cidade/Estado">
+      <input class="field field-company" id="mauticform_input_forumtarifazero_instituicaoempresa" name="mauticform[instituicaoempresa]" value="" type="text" aria-label="Instituição/Empresa">
+      <button type="submit" name="mauticform[submit]" id="mauticform_input_forumtarifazero_submit" class="submit-hit" value="1" aria-label="Inscrever-se Agora">Inscrever-se Agora</button>
+      <input type="hidden" name="mauticform[formId]" id="mauticform_forumtarifazero_id" value="9">
+      <input type="hidden" name="mauticform[return]" id="mauticform_forumtarifazero_return" value="">
+      <input type="hidden" name="mauticform[formName]" id="mauticform_forumtarifazero_name" value="forumtarifazero">
+    </form>
+  </section>
+
+  <img
+    src="https://raw.githubusercontent.com/LucasOliveira1983/omplay-pages/main/ftzo-arguments.png"
+    alt=""
+    class="section-img"
+  >
+
+  <section class="program-section">
+    <h2 class="program-heading">Programação</h2>
+    <div class="schedule-grid">
+      <div class="schedule-item"><strong>Credenciamento:</strong> 8:00h às 9:00h</div>
+      <div class="schedule-item"><strong>Almoço:</strong> 12:45h às 14:00h</div>
+      <div class="schedule-item"><strong>Abertura:</strong> 9:00h</div>
+      <div class="schedule-item"><strong>Painel 3:</strong> 14:00h às 15:30h</div>
+      <div class="schedule-item"><strong>Painel 1:</strong> 9:30h às 11:00h</div>
+      <div class="schedule-item"><strong>Coffee Break:</strong> 15:30h às 15:45h</div>
+      <div class="schedule-item"><strong>Coffee Break:</strong> 11:00h às 11:15h</div>
+      <div class="schedule-item"><strong>Painel 4:</strong> 15:45h às 17:15h</div>
+      <div class="schedule-item"><strong>Painel 2:</strong> 11:15h às 12:45h</div>
+      <div class="schedule-item"><strong>Encerramento:</strong> 17:15h</div>
+    </div>
+    <div class="panels-grid">
+      <div class="panel-card">
+        <div class="panel-header">Painel 1</div>
+        <img src="https://raw.githubusercontent.com/LucasOliveira1983/omplay-pages/main/ftzo-panel-1.png" alt="Painel 1" class="panel-img">
+      </div>
+      <div class="panel-card">
+        <div class="panel-header">Painel 2</div>
+        <img src="https://raw.githubusercontent.com/LucasOliveira1983/omplay-pages/main/ftzo-panel-2.png" alt="Painel 2" class="panel-img">
+      </div>
+      <div class="panel-card">
+        <div class="panel-header">Painel 3</div>
+        <img src="https://raw.githubusercontent.com/LucasOliveira1983/omplay-pages/main/ftzo-panel-3.png" alt="Painel 3" class="panel-img">
+      </div>
+      <div class="panel-card">
+        <div class="panel-header">Painel 4</div>
+        <img src="https://raw.githubusercontent.com/LucasOliveira1983/omplay-pages/main/ftzo-panel-4.png" alt="Painel 4" class="panel-img">
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-realizacao">
+      <span class="footer-label">Realização</span>
+      <span class="footer-logo-wrap">
+        <img src="https://raw.githubusercontent.com/LucasOliveira1983/omplay-pages/main/ftzo-logo-forum-transparent.png" alt="Revista Fórum" class="footer-logo">
+      </span>
+    </div>
+    <p class="footer-apoio">Apoio: Sindicato dos Bancários do Distrito Federal.</p>
+  </footer>
+
+</body>
+</html>
