@@ -15,6 +15,7 @@ arquivo (quando entrou no repositório) foi usada para identificar a que iniciat
 | `logos-institucionais/` | Logos de instituições (CAUSP, CAU, BNDES, Maricá, UFRJ, Vale, Fórum) | jun/2026 |
 | `branding-omplay/` | Identidade visual OMPlay (logos, headers de landing page) | jul/2026 |
 | `capas-conteudo/` | Capas/thumbnails de conteúdo — série "O Pensamento de…" e temas (Trumpismo, Era Vargas, Racismo Estrutural etc.) | ago/2026 |
+| `banners/` | Banners CAU/SP nas versões PC, mobile e tablet (5 cada) | ago/2026 |
 | `diversos/` | Fotos e imagens avulsas (WhatsApp, painéis de evento, retratos) | jun–jul/2026 |
 
 ## ⚠️ Importante sobre os links das imagens
